@@ -4,15 +4,15 @@
     display: block;
 }
 
-.question, .user, .answers {
+.question-title, .user-name, .answers-info {
     text-decoration: none;
 }
 
-.question-details > small {
+.question-stats > small {
     margin-right: 1rem;
 }
 
-.question:hover, .user:hover, .answers:hover {
+.question-title:hover, .user-name:hover, .answers-info:hover {
     text-decoration: underline;
 }
 

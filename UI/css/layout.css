@@ -7,13 +7,12 @@ body {
     font-size: 1.1rem;
     line-height: 1.6;
     font-family: sans-serif;
-    background-color: #ccc;
-    color: #333;
+    background-color: #eee;
 }
 
 .container {
     margin: 0 auto;
-    padding: 0 1rem;
+    padding: 2rem 1rem;
 }
 
 .cleafix {
