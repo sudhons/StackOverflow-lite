@@ -17,10 +17,6 @@
     border-right: 0.1rem solid #aaa;
 }
 
-.answer-stats > small:first-child {
-    margin-left: 0;
-}
-
 .answer-stats > small:last-child {
     border-right: none;
 }
