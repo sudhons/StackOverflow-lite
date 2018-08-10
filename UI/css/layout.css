@@ -7,7 +7,7 @@ body {
     font-size: 1.1rem;
     line-height: 1.6;
     font-family: sans-serif;
-    background-color: #eee;
+    background-color: #fff;
 }
 
 .container {
@@ -82,6 +82,36 @@ body {
     text-align: center;
     height: 5rem;;
     padding: 2rem;
+}
+
+.button {
+    padding: .5rem 1rem;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #073a75;
+    border: none;
+    cursor: pointer;
+    border-radius: .2rem;
+}
+
+.button:hover {
+    opacity: 0.9;
+}
+
+#question-body, #answer-body {
+    padding: 0.4rem;
+    width: 100%;
+    font-size: 1rem;
+    font-family: inherit;
+    min-height: 10rem;
+} 
+
+#title {
+    width: 100%;
+    padding: 0.4rem;
+    margin-bottom: 2rem;
+    font-size: 1rem;
+    font-family: inherit;
 }
 
 @media(min-width: 500px) {
