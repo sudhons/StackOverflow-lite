@@ -1,0 +1,24 @@
+.question-list {
+    border-bottom: 1px solid #aaa;;
+    padding: 1.2rem 0;
+    display: block;
+}
+
+.question, .user, .answers {
+    text-decoration: none;
+}
+
+.question-details > small {
+    margin-right: 1rem;
+}
+
+.question:hover, .user:hover, .answers:hover {
+    opacity: 0.7;
+}
+
+#signup, #login {
+    background: #122858d5;
+    width: 100%;
+    min-height: 30rem;
+    padding: 2rem 0;
+}
