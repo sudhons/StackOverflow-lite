@@ -7,7 +7,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>StackOverflow | Sign Up</title>
     <link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/signup-login.css">
     <link rel="stylesheet" href="css/welcome.css">
 </head>
 
@@ -27,7 +26,7 @@
             <nav id="header-nav" class="cleafix">
                 <ul>
                     <li>
-                        <a href="home.html">Home</a>
+                        <a class="active" href="home.html">Home</a>
                     </li>
                     <li>
                         <a href="profile.html">Profile</a>
@@ -36,7 +35,7 @@
                         <a href="login.html">Log In</a>
                     </li>
                     <li>
-                        <a class="active" href="index.html">Sign Up</a>
+                        <a href="index.html">Sign Up</a>
                     </li>
                 </ul>
             </nav>
@@ -44,25 +43,18 @@
     </header>
 
     <main id="main">
-        <section id="signup">
-            <form action="#" id="form-signup">
-                <div class="form-anim">
-                    <label class="placeholder">Username</label>
-                    <input type="text" name="username" required>
-                </div>
-                <div class="form-anim">
-                    <label class="placeholder">Email</label>
-                    <input type="email" name="email" required>
-                </div>
-                <div class="form-anim">
-                    <label class="placeholder">Password</label>
-                    <input type="password" name="password" required>
-                </div>
-                <div class="form-anim-button">
-                    <input class="button" type="submit" value="Sign Up">
-                </div>
-            </form>
+        <section id="post-question">
+            <div class="container">
+                <h2>Your Question</h1>
+                <form action="">
+                    <label for="title">Title</label>
+                    <input id="title" type="text" name="title" placeholder="Type question heading here...">
+                    <textarea id="question-body" name="question" placeholder="Type your question here..."></textarea>
+                    <input class="button" type="submit" value="Post">
+                </form>
+            </div>
         </section>
+
         <section id="recent-questions">
             <div class="container">
                 <h1>Recent Questions</h1>

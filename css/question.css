@@ -33,25 +33,3 @@
     text-decoration: underline;
 }
 
-#post-answer textarea {
-    padding: 0.4rem;
-    width: 100%;
-    font-size: 1rem;
-    font-family: inherit;
-    min-height: 10rem;
-}
-
-.button {
-    width: 8rem;
-    padding: .5rem 0;
-    font-size: 1rem;
-    color: #fff;
-    background-color: #073a75;
-    border: none;
-    cursor: pointer;
-    border-radius: .2rem;
-}
-
-.button:hover {
-    opacity: 0.9;
-}

@@ -58,18 +58,3 @@
 .form-anim > input:focus {
     border-color: #073a75;;
 }
-
-.button {
-    width: 6rem;
-    padding: .5rem 0;
-    font-size: 1rem;
-    color: #fff;
-    background-color: #073a75;
-    border: none;
-    cursor: pointer;
-    border-radius: .2rem;
-}
-
-.button:hover {
-    opacity: 0.9;
-}
