@@ -7,6 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>StackOverflow | Sign Up</title>
     <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/signup-login.css">
+    <link rel="stylesheet" href="css/welcome.css">
 </head>
 
 <body>
@@ -42,13 +44,32 @@
     </header>
 
     <main id="main">
-       
+        <section id="signup">
+            <form action="#" id="form-signup">
+                <div class="form-anim">
+                    <label class="placeholder">Username</label>
+                    <input type="text" name="username" required>
+                </div>
+                <div class="form-anim">
+                    <label class="placeholder">Email</label>
+                    <input type="email" name="email" required>
+                </div>
+                <div class="form-anim">
+                    <label class="placeholder">Password</label>
+                    <input type="password" name="password" required>
+                </div>
+                <div class="form-anim-button">
+                    <input class="button" type="submit" value="Sign Up">
+                </div>
+            </form>
+        </section>
+
     </main>
 
     <footer id="main-footer">
         Copyright &copy; 2018
     </footer>
-
+    <script src="js/signup-login.js"></script>
 </body>
 
 </html>
