@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>StackOverflow - Ask</title>
+    <title>StackOverflow | Profile</title>
     <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/profile.css">
     <link rel="stylesheet" href="css/welcome.css">
 </head>
 
@@ -26,10 +27,10 @@
             <nav id="header-nav" class="cleafix">
                 <ul>
                     <li>
-                        <a class="active" href="home.html">Home</a>
+                        <a href="home.html">Home</a>
                     </li>
                     <li>
-                        <a href="profile.html">Profile</a>
+                        <a class="active" href="profile.html">Profile</a>
                     </li>
                     <li>
                         <a href="login.html">Log In</a>
@@ -43,28 +44,33 @@
     </header>
 
     <main id="main">
-        <section id="post-question">
-            <div class="container">
-                <h2>Your Question</h1>
-                <form action="">
-                    <label for="title">Title</label>
-                    <input id="title" type="text" name="title" placeholder="Type question heading here...">
-                    <textarea id="question-body" name="question" placeholder="Type your question here..."></textarea>
-                    <input class="button" type="submit" value="Post">
-                </form>
-            </div>
-        </section>
+        <div class="container">
+            <header id="user">
+                <div id="user-picture">
+                    <img src="img/avatar.png" alt="profile picture">
+                </div>
+                <ul id="user-details">
+                    <h3>Frank</h3>
+                    <h4>
+                        <span>franksum@gmail.com</h4>
+                </ul>
+            </header>
 
-        <section id="recent-questions">
-            <div class="container">
-                <h1>Recent Questions</h1>
+            <div id="user-stats">
+                <ul>
+                    <li>Questions
+                        <span>20</span>
+                    </li>
+                    <li>Answers
+                        <span>35</span>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>Recent Questions</h2>
                 <div class="question-list">
                     <a class="question-title" href="question.html">How can i achieve single-threaded multitasking in C++?</a>
                     <div class="question-stats">
-                        <small>
-                            asked by
-                            <a class="user-name" href="profile.html">Frank</a>
-                        </small>
                         <small>
                             <a class="answers-info" href="question.html">0 answers</a>
                         </small>
@@ -74,10 +80,6 @@
                     <a class="question-title" href="question.html">How can i achieve single-threaded multitasking in C?</a>
                     <div class="question-stats">
                         <small>
-                            asked by
-                            <a class="user-name" href="profile.html">Frank</a>
-                        </small>
-                        <small>
                             <a class="answers-info" href="question.html">1 answer</a>
                         </small>
                     </div>
@@ -85,10 +87,6 @@
                 <div class="question-list">
                     <a class="question-title" href="question.html">How can i achieve single-threaded multitasking in PHP?</a>
                     <div class="question-stats">
-                        <small>
-                            asked by
-                            <a class="user-name" href="profile.html">Frank</a>
-                        </small>
                         <small>
                             <a class="answers-info" href="question.html">2 answers</a>
                         </small>
@@ -98,9 +96,49 @@
                     <a class="question-title" href="question.html">How can i achieve single-threaded multitasking in Python?</a>
                     <div class="question-stats">
                         <small>
-                            asked by
-                            <a class="user-name" href="profile.html">Frank</a>
+                            <a class="answers-info" href="question.html">3 answers</a>
                         </small>
+                    </div>
+                </div>
+                <div class="question-list">
+                    <a class="question-title" href="question.html">How can i achieve single-threaded multitasking in Java?</a>
+                    <div class="question-stats">
+                        <small>
+                            <a class="answers-info" href="question.html">4 answers</a>
+                        </small>
+                    </div>
+                </div>
+                </ul>
+            </div>
+            <div>
+                <h2>Top Questions</h2>
+                <div class="question-list">
+                    <a class="question-title" href="question.html">How can i achieve single-threaded multitasking in C++?</a>
+                    <div class="question-stats">
+                        <small>
+                            <a class="answers-info" href="question.html">0 answers</a>
+                        </small>
+                    </div>
+                </div>
+                <div class="question-list">
+                    <a class="question-title" href="question.html">How can i achieve single-threaded multitasking in C?</a>
+                    <div class="question-stats">
+                        <small>
+                            <a class="answers-info" href="question.html">1 answer</a>
+                        </small>
+                    </div>
+                </div>
+                <div class="question-list">
+                    <a class="question-title" href="question.html">How can i achieve single-threaded multitasking in PHP?</a>
+                    <div class="question-stats">
+                        <small>
+                            <a class="answers-info" href="question.html">2 answers</a>
+                        </small>
+                    </div>
+                </div>
+                <div class="question-list">
+                    <a class="question-title" href="question.html">How can i achieve single-threaded multitasking in Python?</a>
+                    <div class="question-stats">
                         <small>
                             <a class="answers-info" href="question.html">3 answers</a>
                         </small>
@@ -110,23 +148,20 @@
                     <a class="question-title" href="question.html">How can i achieve single-threaded multitasking in Java?</a>
                     <div class="question-stats">
                         <small>
-                            asked by
-                            <a class="user-name" href="profile.html">Frank</a>
-                        </small>
-                        <small>
                             <a class="answers-info" href="question.html">4 answers</a>
                         </small>
                     </div>
                 </div>
                 </ul>
             </div>
-        </section>
+        </div>
+        </div>
+        </div>
     </main>
 
     <footer id="main-footer">
         Copyright &copy; 2018
     </footer>
-    <script src="js/signup-login.js"></script>
 </body>
 
 </html>
