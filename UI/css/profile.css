@@ -1,0 +1,46 @@
+ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+#user {
+    display: flex;
+    background-color: #073a75;
+    padding: 1rem 2rem;
+    flex-wrap: wrap;
+    align-items: center;
+    color: #ccc;
+}
+
+#user h3, #user h4 {
+    margin: 0;
+}
+
+#user-picture {
+    flex-basis: 12rem;
+    margin-right: 3rem;
+}
+
+#user img {
+    width: 100%;
+    border-radius: 50%;
+    border: .2rem solid #aaa;
+}
+
+#user-stats ul {
+    background-color: #0a58b1;
+    color: #f4f4f4;
+}
+
+#user-stats ul li {
+    display: inline-block;
+    text-align: center;
+    padding: 0.3rem 2rem;
+    border-radius: .2rem
+}
+
+#user-stats li span {
+    display: block;
+    font-weight: bold;
+}
