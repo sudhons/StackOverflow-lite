@@ -11,14 +11,14 @@ const testingQuestion1 = 'What is this?';
 const testingAnswer1 = 'It ia a ball';
 const emptyQuestion = '   ';
 
-describe('Server', () => {
+describe('App', () => {
   beforeEach((done) => {
     data.deleteAllQuestions();
     done();
   });
 
   describe('/GET /api/v1/questions', () => {
-    it('should GET an empty array when are no questions', (done) => {
+    it('should GET an empty array when there are no questions', (done) => {
       chai.request(app)
         .get('/api/v1/questions')
         .end((err, res) => {
@@ -81,7 +81,7 @@ describe('Server', () => {
     it('should not POST an empty question', (done) => {
       chai.request(app)
         .post('/api/v1/questions')
-        .send({ emptyQuestion })
+        .send({ question: emptyQuestion })
         .end((err, res) => {
           assert.strictEqual(res.status, 422);
           assert.isObject(res.body);
@@ -96,7 +96,7 @@ describe('Server', () => {
     it('should POST a question', (done) => {
       chai.request(app)
         .post('/api/v1/questions')
-        .send({ testingQuestion1 })
+        .send({ question: testingQuestion1 })
         .end((err, res) => {
           assert.strictEqual(res.status, 200);
           assert.isObject(res.body);

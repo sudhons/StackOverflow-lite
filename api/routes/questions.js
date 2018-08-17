@@ -1,9 +1,11 @@
 import express from 'express';
 
-import getQuestionList from '../controllers/questionsController';
+import questions from '../controllers/questionsController';
 
 const router = express.Router();
 
-router.get('/questions', getQuestionList);
+router.get('/questions', questions.getQuestionList);
+
+router.post('/questions', express.json(), questions.addQuestion);
 
 export default router;
