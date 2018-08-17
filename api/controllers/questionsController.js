@@ -17,6 +17,19 @@ const getQuestion = (req, res) => {
   return res.json(resultData);
 };
 
-const questions = { getQuestionList, addQuestion, getQuestion };
+const updateQuestion = (req, res) => {
+  let question = data.getQuestion(req.params.id);
+  if (!question) return res.status(404).json({ message: `Unsuccessful. Question with id ${req.params.id} is not found` });
+  question = data.updateQuestion(req.params.id, req.body.question.trim());
+  if (!question) return res.status(422).json({ message: 'Unsuccessful. Empty input field' });
+  return res.json({ message: 'Question successfully updated', question });
+};
+
+const questions = {
+  getQuestionList,
+  addQuestion,
+  getQuestion,
+  updateQuestion,
+};
 
 export default questions;

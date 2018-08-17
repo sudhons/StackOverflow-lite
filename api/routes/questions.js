@@ -10,4 +10,6 @@ router.post('/questions', express.json(), questions.addQuestion);
 
 router.get('/questions/:id', questions.getQuestion);
 
+router.put('/questions/:id', express.json(), questions.updateQuestion);
+
 export default router;

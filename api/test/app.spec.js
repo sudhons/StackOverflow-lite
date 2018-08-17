@@ -264,7 +264,7 @@ describe('App', () => {
           assert.hasAllKeys(res.body.question.answers[0], ['id', 'answer']);
           assert.isString(res.body.question.answers[0].id);
           assert.strictEqual(res.body.question.answers[0].id, ansId);
-          assert.isObject(res.body.question.answers[0].answer);
+          assert.isString(res.body.question.answers[0].answer);
           assert.strictEqual(res.body.question.answers[0].answer, testingAnswer1);
           done();
         });
