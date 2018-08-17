@@ -29,7 +29,7 @@ describe('Server', () => {
     });
 
     it('should GET an array of all questions', (done) => {
-      const qtnId = data.addQuestion(testingQuestion1);
+      const { id: qtnId } = data.addQuestion(testingQuestion1);
       chai.request(app)
         .get('/api/v1/questions')
         .end((err, res) => {
