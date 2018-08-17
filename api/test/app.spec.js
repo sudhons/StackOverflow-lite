@@ -116,4 +116,61 @@ describe('App', () => {
         });
     });
   });
+
+  describe('/GET /api/v1/questions/:id', () => {
+    it('should not GET any question when the given question id does not exist', (done) => {
+      chai.request(app)
+        .get(`/api/v1/questions/${1}`)
+        .end((err, res) => {
+          assert.strictEqual(res.status, 404);
+          assert.isObject(res.body);
+          assert.isNotEmpty(res.body);
+          assert.hasAllKeys(res.body, ['message']);
+          assert.isString(res.body.message);
+          assert.strictEqual(res.body.message, 'Unsuccessful. Question with id 1 is not found');
+          done();
+        });
+    });
+
+    it('should GET a question by the given id', (done) => {
+      const { id: qtnId } = data.addQuestion(testingQuestion1);
+      chai.request(app)
+        .get(`/api/v1/questions/${qtnId}`)
+        .end((err, res) => {
+          assert.strictEqual(res.status, 200);
+          assert.isObject(res.body);
+          assert.isNotEmpty(res.body);
+          assert.hasAllKeys(res.body, ['id', 'question', 'answers']);
+          assert.isString(res.body.id);
+          assert.strictEqual(res.body.id, qtnId);
+          assert.isString(res.body.question);
+          assert.strictEqual(res.body.question, testingQuestion1);
+          assert.isArray(res.body.answers);
+          assert.isEmpty(res.body.answers);
+          done();
+        });
+    });
+
+    it('should GET a question by the given id and it answers', (done) => {
+      const { id: qtnId } = data.addQuestion(testingQuestion1);
+      data.addAnswer(qtnId, testingAnswer1);
+      chai.request(app)
+        .get(`/api/v1/questions/${qtnId}`)
+        .end((err, res) => {
+          assert.strictEqual(res.status, 200);
+          assert.isObject(res.body);
+          assert.isNotEmpty(res.body);
+          assert.hasAllKeys(res.body, ['id', 'question', 'answers']);
+          assert.isString(res.body.id);
+          assert.strictEqual(res.body.id, qtnId);
+          assert.isString(res.body.question);
+          assert.strictEqual(res.body.question, testingQuestion1);
+          assert.isArray(res.body.answers);
+          assert.isNotEmpty(res.body.answers);
+          assert.lengthOf(res.body.answers, 1);
+          assert.deepEqual(res.body.answers, testingAnswer1);
+          done();
+        });
+    });
+  });
 });
