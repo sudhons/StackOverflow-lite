@@ -1,6 +1,10 @@
 import express from 'express';
 
+import questions from './routes/questions';
+
 const app = express();
+
+app.use('/api/v1', questions);
 
 // catch 404
 app.use((req, res) => {
