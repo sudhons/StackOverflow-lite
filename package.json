@@ -24,6 +24,7 @@
   },
   "scripts": {
     "test": "npm run build && mocha ./build/test/ || true",
+    "lint": "eslint ./api",
     "build": "babel --presets es2015 ./api -d ./build/",
     "start": "npm run build && node ./build/bin/www",
     "devStart": "npm run build && nodemon ./build/bin/www"
