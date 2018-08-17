@@ -8,4 +8,6 @@ router.get('/questions', questions.getQuestionList);
 
 router.post('/questions', express.json(), questions.addQuestion);
 
+router.get('/questions/:id', questions.getQuestion);
+
 export default router;

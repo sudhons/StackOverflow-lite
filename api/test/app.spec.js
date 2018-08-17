@@ -10,6 +10,7 @@ chai.use(chaiHttp);
 const testingQuestion1 = 'What is this?';
 const testingAnswer1 = 'It ia a ball';
 const emptyQuestion = '   ';
+const nonExistingQuestionId = '3bttte';
 
 describe('App', () => {
   beforeEach((done) => {
@@ -119,15 +120,16 @@ describe('App', () => {
 
   describe('/GET /api/v1/questions/:id', () => {
     it('should not GET any question when the given question id does not exist', (done) => {
+      data.addQuestion(testingQuestion1);
       chai.request(app)
-        .get(`/api/v1/questions/${1}`)
+        .get(`/api/v1/questions/${nonExistingQuestionId}`)
         .end((err, res) => {
           assert.strictEqual(res.status, 404);
           assert.isObject(res.body);
           assert.isNotEmpty(res.body);
           assert.hasAllKeys(res.body, ['message']);
           assert.isString(res.body.message);
-          assert.strictEqual(res.body.message, 'Unsuccessful. Question with id 1 is not found');
+          assert.strictEqual(res.body.message, `Unsuccessful. Question with id ${nonExistingQuestionId} is not found`);
           done();
         });
     });
@@ -168,7 +170,8 @@ describe('App', () => {
           assert.isArray(res.body.answers);
           assert.isNotEmpty(res.body.answers);
           assert.lengthOf(res.body.answers, 1);
-          assert.deepEqual(res.body.answers, testingAnswer1);
+          assert.hasAllKeys(res.body.answers[0], ['id', 'answer']);
+          assert.strictEqual(res.body.answers[0].answer, testingAnswer1);
           done();
         });
     });
