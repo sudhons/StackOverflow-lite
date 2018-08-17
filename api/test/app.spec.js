@@ -10,6 +10,7 @@ chai.use(chaiHttp);
 const testingQuestion1 = 'What is this?';
 const testingAnswer1 = 'It ia a ball';
 const emptyQuestion = '   ';
+const nonExistingQuestionId = '3bttte';
 
 describe('App', () => {
   beforeEach((done) => {
@@ -112,6 +113,65 @@ describe('App', () => {
           assert.strictEqual(res.body.question.question, testingQuestion1);
           assert.isArray(res.body.question.answers);
           assert.isEmpty(res.body.question.answers);
+          done();
+        });
+    });
+  });
+
+  describe('/GET /api/v1/questions/:id', () => {
+    it('should not GET any question when the given question id does not exist', (done) => {
+      data.addQuestion(testingQuestion1);
+      chai.request(app)
+        .get(`/api/v1/questions/${nonExistingQuestionId}`)
+        .end((err, res) => {
+          assert.strictEqual(res.status, 404);
+          assert.isObject(res.body);
+          assert.isNotEmpty(res.body);
+          assert.hasAllKeys(res.body, ['message']);
+          assert.isString(res.body.message);
+          assert.strictEqual(res.body.message, `Unsuccessful. Question with id ${nonExistingQuestionId} is not found`);
+          done();
+        });
+    });
+
+    it('should GET a question by the given id', (done) => {
+      const { id: qtnId } = data.addQuestion(testingQuestion1);
+      chai.request(app)
+        .get(`/api/v1/questions/${qtnId}`)
+        .end((err, res) => {
+          assert.strictEqual(res.status, 200);
+          assert.isObject(res.body);
+          assert.isNotEmpty(res.body);
+          assert.hasAllKeys(res.body, ['id', 'question', 'answers']);
+          assert.isString(res.body.id);
+          assert.strictEqual(res.body.id, qtnId);
+          assert.isString(res.body.question);
+          assert.strictEqual(res.body.question, testingQuestion1);
+          assert.isArray(res.body.answers);
+          assert.isEmpty(res.body.answers);
+          done();
+        });
+    });
+
+    it('should GET a question by the given id and it answers', (done) => {
+      const { id: qtnId } = data.addQuestion(testingQuestion1);
+      data.addAnswer(qtnId, testingAnswer1);
+      chai.request(app)
+        .get(`/api/v1/questions/${qtnId}`)
+        .end((err, res) => {
+          assert.strictEqual(res.status, 200);
+          assert.isObject(res.body);
+          assert.isNotEmpty(res.body);
+          assert.hasAllKeys(res.body, ['id', 'question', 'answers']);
+          assert.isString(res.body.id);
+          assert.strictEqual(res.body.id, qtnId);
+          assert.isString(res.body.question);
+          assert.strictEqual(res.body.question, testingQuestion1);
+          assert.isArray(res.body.answers);
+          assert.isNotEmpty(res.body.answers);
+          assert.lengthOf(res.body.answers, 1);
+          assert.hasAllKeys(res.body.answers[0], ['id', 'answer']);
+          assert.strictEqual(res.body.answers[0].answer, testingAnswer1);
           done();
         });
     });
