@@ -199,7 +199,7 @@ describe('App', () => {
       const { id: qtnId } = data.addQuestion(testingAnswer1);
       chai.request(app)
         .put(`/api/v1/questions/${qtnId}`)
-        .send({ question: testingQuestion2 })
+        .send({ question: emptyQuestion })
         .end((err, res) => {
           assert.strictEqual(res.status, 422);
           assert.isObject(res.body);
