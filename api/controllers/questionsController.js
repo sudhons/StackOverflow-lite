@@ -48,6 +48,16 @@ const getAnswer = (req, res) => {
   return res.json(answer);
 };
 
+const updateAnswer = (req, res) => {
+  let question = data.getQuestion(req.params.qtnId);
+  if (!question) return res.status(404).json({ message: `Unsuccessful. Question with id ${req.params.qtnId} is not found` });
+  const answer = data.getAnswer(req.params.qtnId, req.params.ansId);
+  if (!answer) return res.status(404).json({ message: `Unsuccessful. Answer with id ${req.params.ansId} is not found` });
+  question = data.updateAnswer(req.params.qtnId, req.params.ansId, req.body.answer.trim());
+  if (!question) return res.status(422).json({ message: 'Unsuccessful. Empty input field' });
+  return res.json({ message: 'Answer successfully updated', question });
+};
+
 const questions = {
   getQuestionList,
   addQuestion,
@@ -56,6 +66,7 @@ const questions = {
   deleteQuestion,
   addAnswer,
   getAnswer,
+  updateAnswer,
 };
 
 export default questions;

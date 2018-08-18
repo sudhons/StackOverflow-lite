@@ -18,4 +18,6 @@ router.post('/questions/:id/answers', express.json(), questions.addAnswer);
 
 router.get('/questions/:qtnId/answers/:ansId', questions.getAnswer);
 
+router.put('/questions/:qtnId/answers/:ansId', express.json(), questions.updateAnswer);
+
 export default router;
