@@ -25,11 +25,19 @@ const updateQuestion = (req, res) => {
   return res.json({ message: 'Question successfully updated', question });
 };
 
+const deleteQuestion = (req, res) => {
+  let question = data.getQuestion(req.params.id);
+  if (!question) return res.status(404).json({ message: `Unsuccessful. Question with id ${req.params.id} is not found` });
+  question = data.deleteQuestion(req.params.id);
+  return res.json({ message: 'Question successfully deleted', question });
+};
+
 const questions = {
   getQuestionList,
   addQuestion,
   getQuestion,
   updateQuestion,
+  deleteQuestion,
 };
 
 export default questions;

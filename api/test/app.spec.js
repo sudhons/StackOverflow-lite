@@ -270,4 +270,99 @@ describe('App', () => {
         });
     });
   });
+
+  describe('/DELETE /api/v1/questions/:id', () => {
+    it('should not DELETE any question when the given question id does not exist', (done) => {
+      data.addQuestion(testingQuestion1);
+      chai.request(app)
+        .delete(`/api/v1/questions/${nonExistingQuestionId}`)
+        .end((err, res) => {
+          assert.strictEqual(res.status, 404);
+          assert.isObject(res.body);
+          assert.isNotEmpty(res.body);
+          assert.hasAllKeys(res.body, ['message']);
+          assert.isString(res.body.message);
+          assert.strictEqual(res.body.message, `Unsuccessful. Question with id ${nonExistingQuestionId} is not found`);
+          done();
+        });
+    });
+
+    it('should DELETE a question by the given id', (done) => {
+      const { id: qtnId } = data.addQuestion(testingQuestion1);
+      chai.request(app)
+        .delete(`/api/v1/questions/${qtnId}`)
+        .end((err, res) => {
+          assert.strictEqual(res.status, 200);
+          assert.isObject(res.body);
+          assert.isNotEmpty(res.body);
+          assert.hasAllKeys(res.body, ['message', 'question']);
+          assert.isString(res.body.message);
+          assert.strictEqual(res.body.message, 'Question successfully deleted');
+          assert.isObject(res.body.question);
+          assert.isNotEmpty(res.body.question);
+          assert.hasAllKeys(res.body.question, ['id', 'question', 'answers']);
+          assert.isString(res.body.question.id);
+          assert.strictEqual(res.body.question.id, qtnId);
+          assert.isString(res.body.question.question);
+          assert.strictEqual(res.body.question.question, testingQuestion1);
+          assert.isArray(res.body.question.answers);
+          assert.isEmpty(res.body.question.answers);
+        });
+
+      chai.request(app)
+        .get(`/api/v1/questions/${qtnId}`)
+        .end((err, res) => {
+          assert.strictEqual(res.status, 404);
+          assert.isObject(res.body);
+          assert.isNotEmpty(res.body);
+          assert.hasAllKeys(res.body, ['message']);
+          assert.isString(res.body.message);
+          assert.strictEqual(res.body.message, `Unsuccessful. Question with id ${qtnId} is not found`);
+          done();
+        });
+    });
+
+    it('should DELETE a question by the given id and it answers', (done) => {
+      const { id: qtnId } = data.addQuestion(testingQuestion1);
+      const { answers: [{ id: ansId }] } = data.addAnswer(qtnId, testingAnswer1);
+      chai.request(app)
+        .delete(`/api/v1/questions/${qtnId}`)
+        .end((err, res) => {
+          assert.strictEqual(res.status, 200);
+          assert.isObject(res.body);
+          assert.isNotEmpty(res.body);
+          assert.hasAllKeys(res.body, ['message', 'question']);
+          assert.isString(res.body.message);
+          assert.strictEqual(res.body.message, 'Question successfully deleted');
+          assert.isObject(res.body.question);
+          assert.isNotEmpty(res.body.question);
+          assert.hasAllKeys(res.body.question, ['id', 'question', 'answers']);
+          assert.isString(res.body.question.id);
+          assert.strictEqual(res.body.question.id, qtnId);
+          assert.isString(res.body.question.question);
+          assert.strictEqual(res.body.question.question, testingQuestion1);
+          assert.isArray(res.body.question.answers);
+          assert.isNotEmpty(res.body.question.answers);
+          assert.lengthOf(res.body.question.answers, 1);
+          assert.isObject(res.body.question.answers[0]);
+          assert.hasAllKeys(res.body.question.answers[0], ['id', 'answer']);
+          assert.isString(res.body.question.answers[0].id);
+          assert.strictEqual(res.body.question.answers[0].id, ansId);
+          assert.isString(res.body.question.answers[0].answer);
+          assert.strictEqual(res.body.question.answers[0].answer, testingAnswer1);
+        });
+
+      chai.request(app)
+        .get(`/api/v1/questions/${qtnId}`)
+        .end((err, res) => {
+          assert.strictEqual(res.status, 404);
+          assert.isObject(res.body);
+          assert.isNotEmpty(res.body);
+          assert.hasAllKeys(res.body, ['message']);
+          assert.isString(res.body.message);
+          assert.strictEqual(res.body.message, `Unsuccessful. Question with id ${qtnId} is not found`);
+          done();
+        });
+    });
+  });
 });

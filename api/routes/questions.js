@@ -12,4 +12,6 @@ router.get('/questions/:id', questions.getQuestion);
 
 router.put('/questions/:id', express.json(), questions.updateQuestion);
 
+router.delete('/questions/:id', express.json(), questions.deleteQuestion);
+
 export default router;
