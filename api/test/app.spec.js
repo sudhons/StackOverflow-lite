@@ -585,7 +585,7 @@ describe('App', () => {
           assert.strictEqual(res.body.message, 'Answer successfully updated');
           assert.isObject(res.body.question);
           assert.isNotEmpty(res.body.question);
-          assert.hasAllKeys(res.body, ['id', 'question', 'answers']);
+          assert.hasAllKeys(res.body.question, ['id', 'question', 'answers']);
           assert.isString(res.body.question.id);
           assert.strictEqual(res.body.question.id, qtnId);
           assert.isString(res.body.question.question);
