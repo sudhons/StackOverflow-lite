@@ -471,7 +471,7 @@ describe('App', () => {
       const { id: qtnId } = data.addQuestion(testingQuestion1);
       const { answers: [{ id: ansId }] } = data.addAnswer(qtnId, testingAnswer1);
       chai.request(app)
-        .get(`api/v1/questions/${nonExistingQuestionId}/answers/${ansId}`)
+        .get(`/api/v1/questions/${nonExistingQuestionId}/answers/${ansId}`)
         .end((err, res) => {
           assert.strictEqual(res.status, 404);
           assert.isObject(res.body);

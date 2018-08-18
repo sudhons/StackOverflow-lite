@@ -16,4 +16,6 @@ router.delete('/questions/:id', express.json(), questions.deleteQuestion);
 
 router.post('/questions/:id/answers', express.json(), questions.addAnswer);
 
+router.get('/questions/:qtnId/answers/:ansId', questions.getAnswer);
+
 export default router;
