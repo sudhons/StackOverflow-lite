@@ -14,4 +14,6 @@ router.put('/questions/:id', express.json(), questions.updateQuestion);
 
 router.delete('/questions/:id', express.json(), questions.deleteQuestion);
 
+router.post('/questions/:id/answers', express.json(), questions.addAnswer);
+
 export default router;

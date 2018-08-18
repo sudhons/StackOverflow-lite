@@ -9,7 +9,7 @@ chai.use(chaiHttp);
 
 const testingQuestion1 = 'What is this?';
 const testingQuestion2 = 'This is what?';
-const testingAnswer1 = 'It ia a ball';
+const testingAnswer1 = 'It is a ball';
 const testingAnswer2 = 'It is an egg';
 const emptyQuestion = '   ';
 const emptyAnswer = '   ';
@@ -380,7 +380,7 @@ describe('App', () => {
           assert.isNotEmpty(res.body);
           assert.hasAllKeys(res.body, ['message']);
           assert.isString(res.body.message);
-          assert.strictEqual(res.body.message, 'Unsuccessful. Question with id 1 is not found');
+          assert.strictEqual(res.body.message, `Unsuccessful. Question with id ${nonExistingQuestionId} is not found`);
           done();
         });
     });
@@ -434,7 +434,7 @@ describe('App', () => {
 
     it('should POST a new answer to the question of the given id', (done) => {
       const { id: qtnId } = data.addQuestion(testingQuestion1);
-      data.addAnswer(qtnId, { answer: testingAnswer1 });
+      data.addAnswer(qtnId, testingAnswer1);
       chai.request(app)
         .post(`/api/v1/questions/${qtnId}/answers`)
         .send({ answer: testingAnswer2 })
