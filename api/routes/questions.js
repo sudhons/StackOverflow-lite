@@ -20,4 +20,6 @@ router.get('/questions/:qtnId/answers/:ansId', questions.getAnswer);
 
 router.put('/questions/:qtnId/answers/:ansId', express.json(), questions.updateAnswer);
 
+router.delete('/questions/:qtnId/answers/:ansId', questions.deleteAnswer);
+
 export default router;

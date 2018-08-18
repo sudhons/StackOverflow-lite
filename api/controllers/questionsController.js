@@ -58,6 +58,15 @@ const updateAnswer = (req, res) => {
   return res.json({ message: 'Answer successfully updated', question });
 };
 
+const deleteAnswer = (req, res) => {
+  let question = data.getQuestion(req.params.qtnId);
+  if (!question) return res.status(404).json({ message: `Unsuccessful. Question with id ${req.params.qtnId} is not found` });
+  const answer = data.getAnswer(req.params.qtnId, req.params.ansId);
+  if (!answer) return res.status(404).json({ message: `Unsuccessful. Answer with id ${req.params.ansId} is not found` });
+  question = data.deleteAnswer(req.params.qtnId, req.params.ansId);
+  return res.json({ message: 'Answer successfully deleted', question });
+};
+
 const questions = {
   getQuestionList,
   addQuestion,
@@ -67,6 +76,7 @@ const questions = {
   addAnswer,
   getAnswer,
   updateAnswer,
+  deleteAnswer,
 };
 
 export default questions;
