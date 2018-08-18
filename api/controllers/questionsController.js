@@ -8,7 +8,7 @@ const getQuestionList = (req, res) => {
 const addQuestion = (req, res) => {
   const question = data.addQuestion(req.body.question.trim());
   if (!question) return res.status(422).json({ message: 'Unsuccessful. Empty input field' });
-  return res.json({ message: 'Question successfully posted', question });
+  return res.status(201).json({ message: 'Question successfully posted', question });
 };
 
 const getQuestion = (req, res) => {
@@ -37,7 +37,7 @@ const addAnswer = (req, res) => {
   if (!question) return res.status(404).json({ message: `Unsuccessful. Question with id ${req.params.id} is not found` });
   question = data.addAnswer(req.params.id, req.body.answer.trim());
   if (!question) return res.status(422).json({ message: 'Unsuccessful. Empty input field' });
-  return res.json({ message: 'Answer successfully posted', question });
+  return res.status(201).json({ message: 'Answer successfully posted', question });
 };
 
 const questions = {
