@@ -517,4 +517,90 @@ describe('App', () => {
         });
     });
   });
+
+  describe('/PUT /api/vi/questions/:qtnId/answers/:ansId', () => {
+    it('should not UPDATE any answer when the given question id does not exist', (done) => {
+      const { id: qtnId } = data.addQuestion(testingQuestion1);
+      const { answers: [{ id: ansId }] } = data.addAnswer(qtnId, testingAnswer1);
+      chai.request(app)
+        .put(`/api/v1/questions/${nonExistingQuestionId}/answers/${ansId}`)
+        .send({ answer: testingAnswer2 })
+        .end((err, res) => {
+          assert.strictEqual(res.status, 404);
+          assert.isObject(res.body);
+          assert.isNotEmpty(res.body);
+          assert.hasAllKeys(res.body, ['message']);
+          assert.isString(res.body.message);
+          assert.strictEqual(res.body.message, `Unsuccessful. Question with id ${nonExistingQuestionId} is not found`);
+          done();
+        });
+    });
+
+    it('should not UPDATE any answer when the given answer id does not exist', (done) => {
+      const { id: qtnId } = data.addQuestion(testingQuestion1);
+      data.addAnswer(qtnId, testingAnswer1);
+      chai.request(app)
+        .put(`/api/v1/questions/${qtnId}/answers/${nonExistingAnswerId}`)
+        .send({ answer: testingAnswer2 })
+        .end((err, res) => {
+          assert.strictEqual(res.status, 404);
+          assert.isObject(res.body);
+          assert.isNotEmpty(res.body);
+          assert.hasAllKeys(res.body, ['message']);
+          assert.isString(res.body.message);
+          assert.strictEqual(res.body.message, `Unsuccessful. Answer with id ${nonExistingAnswerId} is not found`);
+          done();
+        });
+    });
+
+    it('should not UPDATE with an empty answer', (done) => {
+      const { id: qtnId } = data.addQuestion(testingQuestion1);
+      const { answers: [{ id: ansId }] } = data.addAnswer(qtnId, testingAnswer1);
+      chai.request(app)
+        .put(`/api/v1/questions/${qtnId}/answers/${ansId}`)
+        .send({ answer: emptyAnswer })
+        .end((err, res) => {
+          assert.strictEqual(res.status, 422);
+          assert.isObject(res.body);
+          assert.isNotEmpty(res.body);
+          assert.hasAllKeys(res.body, ['message']);
+          assert.isString(res.body.message);
+          assert.strictEqual(res.body.message, 'Unsuccessful. Empty input field');
+          done();
+        });
+    });
+
+    it('should UPDATE an answer of the given answer id', (done) => {
+      const { id: qtnId } = data.addQuestion(testingQuestion1);
+      const { answers: [{ id: ansId }] } = data.addAnswer(qtnId, testingAnswer1);
+      chai.request(app)
+        .put(`/api/v1/questions/${qtnId}/answers/${ansId}`)
+        .send({ answer: testingAnswer2 })
+        .end((err, res) => {
+          assert.strictEqual(res.status, 200);
+          assert.isObject(res.body);
+          assert.isNotEmpty(res.body);
+          assert.hasAllKeys(res.body, ['message', 'question']);
+          assert.isString(res.body.message);
+          assert.strictEqual(res.body.message, 'Answer successfully updated');
+          assert.isObject(res.body.question);
+          assert.isNotEmpty(res.body.question);
+          assert.hasAllKeys(res.body, ['id', 'question', 'answers']);
+          assert.isString(res.body.question.id);
+          assert.strictEqual(res.body.question.id, qtnId);
+          assert.isString(res.body.question.question);
+          assert.strictEqual(res.body.question.question, testingQuestion1);
+          assert.isArray(res.body.question.answers);
+          assert.isNotEmpty(res.body.question.answers);
+          assert.lengthOf(res.body.question.answers, 1);
+          assert.isObject(res.body.question.answers[0]);
+          assert.hasAllKeys(res.body.question.answers[0], ['id', 'answer']);
+          assert.isString(res.body.question.answers[0].id);
+          assert.strictEqual(res.body.question.answers[0].id, ansId);
+          assert.isString(res.body.question.answers[0].answer);
+          assert.strictEqual(res.body.question.answers[0].answer, testingAnswer2);
+          done();
+        });
+    });
+  });
 });
