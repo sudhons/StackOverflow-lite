@@ -14,6 +14,7 @@ const testingAnswer2 = 'It is an egg';
 const emptyQuestion = '   ';
 const emptyAnswer = '   ';
 const nonExistingQuestionId = '3bttte';
+const nonExistingAnswerId = 'qw754w';
 
 describe('App', () => {
   beforeEach((done) => {
@@ -102,7 +103,7 @@ describe('App', () => {
         .post('/api/v1/questions')
         .send({ question: testingQuestion1 })
         .end((err, res) => {
-          assert.strictEqual(res.status, 200);
+          assert.strictEqual(res.status, 201);
           assert.isObject(res.body);
           assert.isNotEmpty(res.body);
           assert.hasAllKeys(res.body, ['message', 'question']);
@@ -407,7 +408,7 @@ describe('App', () => {
         .post(`/api/v1/questions/${qtnId}/answers`)
         .send({ answer: testingAnswer1 })
         .end((err, res) => {
-          assert.strictEqual(res.status, 200);
+          assert.strictEqual(res.status, 201);
           assert.isObject(res.body);
           assert.isNotEmpty(res.body);
           assert.hasAllKeys(res.body, ['message', 'question']);
@@ -439,7 +440,7 @@ describe('App', () => {
         .post(`/api/v1/questions/${qtnId}/answers`)
         .send({ answer: testingAnswer2 })
         .end((err, res) => {
-          assert.strictEqual(res.status, 200);
+          assert.strictEqual(res.status, 201);
           assert.isObject(res.body);
           assert.isNotEmpty(res.body);
           assert.hasAllKeys(res.body, ['message', 'question']);
@@ -460,6 +461,58 @@ describe('App', () => {
           assert.isString(res.body.question.answers[1].id);
           assert.isString(res.body.question.answers[1].answer);
           assert.deepEqual(res.body.question.answers[1].answer, testingAnswer2);
+          done();
+        });
+    });
+  });
+
+  describe('/GET /api/v1/questions/:qtnId/answers/:ansId', () => {
+    it('should not GET any answer when the given question id does not exist', (done) => {
+      const { id: qtnId } = data.addQuestion(testingQuestion1);
+      const { answers: [{ id: ansId }] } = data.addAnswer(qtnId, testingAnswer1);
+      chai.request(app)
+        .get(`/api/v1/questions/${nonExistingQuestionId}/answers/${ansId}`)
+        .end((err, res) => {
+          assert.strictEqual(res.status, 404);
+          assert.isObject(res.body);
+          assert.isNotEmpty(res.body);
+          assert.hasAllKeys(res.body, ['message']);
+          assert.isString(res.body.message);
+          assert.strictEqual(res.body.message, `Unsuccessful. Question with id ${nonExistingQuestionId} is not found`);
+          done();
+        });
+    });
+
+    it('should not GET any answer when the given answer id does not exist', (done) => {
+      const { id: qtnId } = data.addQuestion(testingQuestion1);
+      data.addAnswer(qtnId, testingAnswer1);
+      chai.request(app)
+        .get(`/api/v1/questions/${qtnId}/answers/${nonExistingAnswerId}`)
+        .end((err, res) => {
+          assert.strictEqual(res.status, 404);
+          assert.isObject(res.body);
+          assert.isNotEmpty(res.body);
+          assert.hasAllKeys(res.body, ['message']);
+          assert.isString(res.body.message);
+          assert.strictEqual(res.body.message, `Unsuccessful. Answer with id ${nonExistingAnswerId} is not found`);
+          done();
+        });
+    });
+
+    it('should GET an answer by the given answer id', (done) => {
+      const { id: qtnId } = data.addQuestion(testingQuestion1);
+      const { answers: [{ id: ansId }] } = data.addAnswer(qtnId, testingAnswer1);
+      chai.request(app)
+        .get(`/api/v1/questions/${qtnId}/answers/${ansId}`)
+        .end((err, res) => {
+          assert.strictEqual(res.status, 200);
+          assert.isObject(res.body);
+          assert.isNotEmpty(res.body);
+          assert.hasAllKeys(res.body, ['id', 'answer']);
+          assert.isString(res.body.id);
+          assert.strictEqual(res.body.id, ansId);
+          assert.isString(res.body.answer);
+          assert.strictEqual(res.body.answer, testingAnswer1);
           done();
         });
     });
