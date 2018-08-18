@@ -4,6 +4,10 @@ import questions from './routes/questions';
 
 const app = express();
 
+app.use('/', (req, res) => {
+  res.status(200).json({ message: 'StackOverflow-lite' });
+});
+
 app.use('/api/v1', questions);
 
 // catch 404
