@@ -10,7 +10,9 @@ chai.use(chaiHttp);
 const testingQuestion1 = 'What is this?';
 const testingQuestion2 = 'This is what?';
 const testingAnswer1 = 'It ia a ball';
+const testingAnswer2 = 'It is an egg';
 const emptyQuestion = '   ';
+const emptyAnswer = '   ';
 const nonExistingQuestionId = '3bttte';
 
 describe('App', () => {
@@ -361,6 +363,103 @@ describe('App', () => {
           assert.hasAllKeys(res.body, ['message']);
           assert.isString(res.body.message);
           assert.strictEqual(res.body.message, `Unsuccessful. Question with id ${qtnId} is not found`);
+          done();
+        });
+    });
+  });
+
+  describe('/POST /api/v1/questions/:id/answers', () => {
+    it('should not POST an answer when the given question id does not exist', (done) => {
+      data.addQuestion(testingQuestion1);
+      chai.request(app)
+        .post(`/api/v1/questions/${nonExistingQuestionId}/answers`)
+        .send({ answer: testingAnswer1 })
+        .end((err, res) => {
+          assert.strictEqual(res.status, 404);
+          assert.isObject(res.body);
+          assert.isNotEmpty(res.body);
+          assert.hasAllKeys(res.body, ['message']);
+          assert.isString(res.body.message);
+          assert.strictEqual(res.body.message, 'Unsuccessful. Question with id 1 is not found');
+          done();
+        });
+    });
+
+    it('should not POST an empty answer', (done) => {
+      const { id: qtnId } = data.addQuestion(testingQuestion1);
+      chai.request(app)
+        .post(`/api/v1/questions/${qtnId}/answers`)
+        .send({ answer: emptyAnswer })
+        .end((err, res) => {
+          assert.strictEqual(res.status, 422);
+          assert.isObject(res.body);
+          assert.isNotEmpty(res.body);
+          assert.hasAllKeys(res.body, ['message']);
+          assert.isString(res.body.message);
+          assert.strictEqual(res.body.message, 'Unsuccessful. Empty input field');
+          done();
+        });
+    });
+
+    it('should POST a first answer to the question of the given id', (done) => {
+      const { id: qtnId } = data.addQuestion(testingQuestion1);
+      chai.request(app)
+        .post(`/api/v1/questions/${qtnId}/answers`)
+        .send({ answer: testingAnswer1 })
+        .end((err, res) => {
+          assert.strictEqual(res.status, 200);
+          assert.isObject(res.body);
+          assert.isNotEmpty(res.body);
+          assert.hasAllKeys(res.body, ['message', 'question']);
+          assert.isString(res.body.message);
+          assert.strictEqual(res.body.message, 'Answer successfully posted');
+          assert.isObject(res.body.question);
+          assert.isNotEmpty(res.body.question);
+          assert.hasAllKeys(res.body.question, ['id', 'question', 'answers']);
+          assert.isString(res.body.question.id);
+          assert.strictEqual(res.body.question.id, qtnId);
+          assert.isString(res.body.question.question);
+          assert.strictEqual(res.body.question.question, testingQuestion1);
+          assert.isArray(res.body.question.answers);
+          assert.isNotEmpty(res.body.question.answers);
+          assert.lengthOf(res.body.question.answers, 1);
+          assert.isObject(res.body.question.answers[0]);
+          assert.hasAllKeys(res.body.question.answers[0], ['id', 'answer']);
+          assert.isString(res.body.question.answers[0].id);
+          assert.isString(res.body.question.answers[0].answer);
+          assert.strictEqual(res.body.question.answers[0].answer, testingAnswer1);
+          done();
+        });
+    });
+
+    it('should POST a new answer to the question of the given id', (done) => {
+      const { id: qtnId } = data.addQuestion(testingQuestion1);
+      data.addAnswer(qtnId, { answer: testingAnswer1 });
+      chai.request(app)
+        .post(`/api/v1/questions/${qtnId}/answers`)
+        .send({ answer: testingAnswer2 })
+        .end((err, res) => {
+          assert.strictEqual(res.status, 200);
+          assert.isObject(res.body);
+          assert.isNotEmpty(res.body);
+          assert.hasAllKeys(res.body, ['message', 'question']);
+          assert.isString(res.body.message);
+          assert.strictEqual(res.body.message, 'Answer successfully posted');
+          assert.isObject(res.body.question);
+          assert.isNotEmpty(res.body.question);
+          assert.hasAllKeys(res.body.question, ['id', 'question', 'answers']);
+          assert.isString(res.body.question.id);
+          assert.strictEqual(res.body.question.id, qtnId);
+          assert.isString(res.body.question.question);
+          assert.strictEqual(res.body.question.question, testingQuestion1);
+          assert.isArray(res.body.question.answers);
+          assert.isNotEmpty(res.body.question.answers);
+          assert.lengthOf(res.body.question.answers, 2);
+          assert.isObject(res.body.question.answers[1]);
+          assert.hasAllKeys(res.body.question.answers[1], ['id', 'answer']);
+          assert.isString(res.body.question.answers[1].id);
+          assert.isString(res.body.question.answers[1].answer);
+          assert.deepEqual(res.body.question.answers[1].answer, testingAnswer2);
           done();
         });
     });
