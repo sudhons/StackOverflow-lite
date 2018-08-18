@@ -603,4 +603,63 @@ describe('App', () => {
         });
     });
   });
+
+  describe('/DELETE /api/v1/questions/:qtnId/answers/:ansId', () => {
+    it('should not DELETE any answer when the given question id does not exist', (done) => {
+      const { id: qtnId } = data.addQuestion(testingQuestion1);
+      const { answers: [{ id: ansId }] } = data.addAnswer(qtnId, testingAnswer1);
+      chai.request(app)
+        .delete(`/api/v1/questions/${nonExistingQuestionId}/answers/${ansId}`)
+        .end((err, res) => {
+          assert.strictEqual(res.status, 404);
+          assert.isObject(res.body);
+          assert.isNotEmpty(res.body);
+          assert.hasAllKeys(res.body, ['message']);
+          assert.isString(res.body.message);
+          assert.strictEqual(res.body.message, `Unsuccessful. Question with id ${nonExistingQuestionId} is not found`);
+          done();
+        });
+    });
+
+    it('should not DELETE any answer when the given answer id does not exist', (done) => {
+      const { id: qtnId } = data.addQuestion(testingQuestion1);
+      data.addAnswer(qtnId, testingAnswer1);
+      chai.request(app)
+        .delete(`/api/v1/questions/${qtnId}/answers/${nonExistingAnswerId}`)
+        .end((err, res) => {
+          assert.strictEqual(res.status, 404);
+          assert.isObject(res.body);
+          assert.isNotEmpty(res.body);
+          assert.hasAllKeys(res.body, ['message']);
+          assert.isString(res.body.message);
+          assert.strictEqual(res.body.message, `Unsuccessful. Answer with id ${nonExistingAnswerId} is not found`);
+          done();
+        });
+    });
+
+    it('should DELETE an answer of the given answer id', (done) => {
+      const { id: qtnId } = data.addQuestion(testingQuestion1);
+      const { answers: [{ id: ansId }] } = data.addAnswer(qtnId, testingAnswer1);
+      chai.request(app)
+        .delete(`/api/v1/questions/${qtnId}/answers/${ansId}`)
+        .end((err, res) => {
+          assert.strictEqual(res.status, 200);
+          assert.isObject(res.body);
+          assert.isNotEmpty(res.body);
+          assert.hasAllKeys(res.body, ['message', 'question']);
+          assert.isString(res.body.message);
+          assert.strictEqual(res.body.message, 'Answer successfully deleted');
+          assert.isObject(res.body.question);
+          assert.isNotEmpty(res.body.question);
+          assert.hasAllKeys(res.body.question, ['id', 'question', 'answers']);
+          assert.isString(res.body.question.id);
+          assert.strictEqual(res.body.question.id, qtnId);
+          assert.isString(res.body.question.question);
+          assert.strictEqual(res.body.question.question, testingQuestion1);
+          assert.isArray(res.body.question.answers);
+          assert.isEmpty(res.body.question.answers);
+          done();
+        });
+    });
+  });
 });
