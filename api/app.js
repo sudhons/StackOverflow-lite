@@ -4,7 +4,7 @@ import questions from './routes/questions';
 
 const app = express();
 
-app.use('/', (req, res) => {
+app.get('/', (req, res) => {
   res.status(200).json({ message: 'StackOverflow-lite' });
 });
 
