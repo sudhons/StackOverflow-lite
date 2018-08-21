@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>StackOverflow - Questions</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
+        crossorigin="anonymous">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/question.css">
 </head>
@@ -17,12 +19,17 @@
                 <h1>
                     <a href="home.html">StackOverflow</a>
                 </h1>
+                <div id="menu">
+                    <a href="#">
+                        <i class="fas fa-bars"></i>
+                    </a>
+                </div>
             </div>
-            <div id="header-search">
-                <form action="" method="GET">
-                    <input type="search" name="search" placeholder="search">
-                </form>
-            </div>
+
+            <form id="header-search" action="" method="GET">
+                <input type="search" name="search" placeholder="search">
+            </form>
+
             <nav id="header-nav" class="cleafix">
                 <ul>
                     <li>
@@ -52,6 +59,13 @@
                     excepturi, aspernatur sit numquam vero vel reiciendis fugit eaque enim ratione beatae eius repudiandae
                     minus ex fugiat cum.</p>
             </div>
+            <div id="post-answer">
+                <h2>Your Answer</h1>
+                    <form action="">
+                        <textarea id="answer-body" name="answer" placeholder="Type your answer here..."></textarea>
+                        <input class="button" type="submit" value="Post Answer">
+                    </form>
+            </div>
             <div class="answers">
                 <h3>4 Answers</h3>
                 <div class="answer">
@@ -65,10 +79,17 @@
                             <a class="user-name" href="profile.html">Frank</a>
                         </small>
                         <small>
-                            <a class="upvote" href="#">4&nbsp;Upvote</a>
+                            20 mins ago
                         </small>
                         <small>
-                            <a class="downvote" href="#">4&nbsp;Downvote</a>
+                            <a class="upvote" href="#">4&nbsp;
+                                <i class="far fa-thumbs-up"></i>
+                            </a>
+                        </small>
+                        <small>
+                            <a class="downvote" href="#">4&nbsp;
+                                <i class="far fa-thumbs-down"></i>
+                            </a>
                         </small>
                     </div>
                 </div>
@@ -83,10 +104,17 @@
                             <a class="user-name" href="profile.html">Frank</a>
                         </small>
                         <small>
-                            <a class="upvote" href="#">4&nbsp;Upvote</a>
+                            20 mins ago
                         </small>
                         <small>
-                            <a class="downvote" href="#">4&nbsp;Downvote</a>
+                            <a class="upvote" href="#">4&nbsp;
+                                <i class="far fa-thumbs-up"></i>
+                            </a>
+                        </small>
+                        <small>
+                            <a class="downvote" href="#">4&nbsp;
+                                <i class="far fa-thumbs-down"></i>
+                            </a>
                         </small>
                     </div>
                 </div>
@@ -101,10 +129,17 @@
                             <a class="user-name" href="profile.html">Frank</a>
                         </small>
                         <small>
-                            <a class="upvote" href="#">4&nbsp;Upvote</a>
+                            20 mins ago
                         </small>
                         <small>
-                            <a class="downvote" href="#">4&nbsp;Downvote</a>
+                            <a class="upvote" href="#">4&nbsp;
+                                <i class="far fa-thumbs-up"></i>
+                            </a>
+                        </small>
+                        <small>
+                            <a class="downvote" href="#">4&nbsp;
+                                <i class="far fa-thumbs-down"></i>
+                            </a>
                         </small>
                     </div>
                 </div>
@@ -119,20 +154,20 @@
                             <a class="user-name" href="profile.html">Frank</a>
                         </small>
                         <small>
-                            <a class="upvote" href="#">4&nbsp;Upvote</a>
+                            20 mins ago
                         </small>
                         <small>
-                            <a class="downvote" href="#">4&nbsp;Downvote</a>
+                            <a class="upvote" href="#">4&nbsp;
+                                <i class="far fa-thumbs-up"></i>
+                            </a>
+                        </small>
+                        <small>
+                            <a class="downvote" href="#">4&nbsp;
+                                <i class="far fa-thumbs-down"></i>
+                            </a>
                         </small>
                     </div>
                 </div>
-            </div>
-            <div id="post-answer">
-                <h2>Your Answer</h1>
-                <form action="">
-                    <textarea id="answer-body" name="answer" placeholder="Type your answer here..."></textarea>
-                    <input class="button" type="submit" value="Post Answer">
-                </form>
             </div>
         </div>
     </main>

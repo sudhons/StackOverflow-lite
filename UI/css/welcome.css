@@ -6,6 +6,11 @@
 
 .question-title, .user-name, .answers-info {
     text-decoration: none;
+    color: #0f4786;
+}
+
+.question-title:visited, .user-name:visited, .answers-info:visited {
+    color: #0f4786;
 }
 
 .question-stats > small {
@@ -16,9 +21,12 @@
     text-decoration: underline;
 }
 
+#post-question {
+    display: none;
+}
+
 #signup, #login {
-    background: #073a75;
     width: 100%;
-    min-height: 30rem;
+    min-height: 80.9vh;
     padding: 2rem 0;
 }
