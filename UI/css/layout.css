@@ -143,10 +143,14 @@ small > a {
     color: #0f4786;
 }
 
-@media(min-width: 650px) {
+@media(min-width: 700px) {
 
     .container {
         width: 80%;
+    }
+
+    #header-search, #header-nav {
+        display: block ! Important;
     }
 
     #brand {
@@ -185,10 +189,14 @@ small > a {
 }
 
 
-@media(min-width: 950px) {
+@media(min-width: 1120px) {
 
     .container {
         width: 70%;
+    }
+
+    #header-search, #header-nav {
+        display: block ! Important;
     }
     
     #main-header-container {
