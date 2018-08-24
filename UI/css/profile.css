@@ -4,9 +4,13 @@ ul {
     list-style-type: none;
 }
 
+#recent-qtn {
+    margin-right: 1rem;
+}
+
 #user {
     display: flex;
-    background-color: #073a75;
+    background-color: #0f4786;
     padding: 1rem 2rem;
     flex-wrap: wrap;
     align-items: center;
@@ -43,4 +47,12 @@ ul {
 #user-stats li span {
     display: block;
     font-weight: bold;
+}
+
+@media(min-width: 776px) {
+    #qtn-split {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 1rem;
+    }
 }

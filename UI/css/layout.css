@@ -2,11 +2,15 @@
     box-sizing: border-box;
 }
 
+h1, h2, h3, h4 {
+    font-weight: 200;
+}
+
 body {
     margin: 0;
     font-size: 1.1rem;
     line-height: 1.6;
-    font-family: sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     background-color: #fff;
 }
 
@@ -20,29 +24,39 @@ body {
 }
 
 #main-header {
-    background-color: #000;
-    color: #fff;
-    min-height: 4rem;
-    padding: 0.4rem 0;
+    background-color: #eee;
+    min-height: 3rem;
+    box-shadow: 0 0 2rem #ccc;
+    padding: 0.1rem 0;
 }
 
 #main-header-container {
     width: 90%;
     margin: 0 auto;
-    text-align: center;
+}
+
+#brand {
+    display: flex;
 }
 
 #brand h1 {
     margin: 0;
+    font-size: 2rem;
 }
 
 #brand a {
     text-decoration: none;
-    color: #fff;
+    color:  #0769da;
 }
 
-#header-search {
-    margin-top: 0.5rem;
+#menu {
+    margin-left: auto;
+    font-size: 1.8rem;
+    display: block;
+}
+
+#header-search, #header-nav {
+    display: none;
 }
 
 #header-search input[type="search"] {
@@ -51,47 +65,62 @@ body {
     font-size: 1rem;
     padding: .5rem;
     border: none;
-    border-radius: .3rem;
-    background-color: #222;
-    color: #fff;
+    border-radius: .4rem;
+    border: .1rem solid #eee;
+    color: #000;
+    outline: none;
 }
 
 #header-search input[type="search"]:focus {
-    outline: #aaa solid 0.12rem;
+    border: #3a7ac4 solid 0.12rem;
 }
 
 #header-nav ul {
     list-style-type: none;
     padding: 0;
-    margin: 1.2rem 0 0 0;
+}
+
+#header-nav li {
+    display: inline-block;
+    width: 100%;
 }
 
 #header-nav a {
+    display: inline-block;
     text-decoration: none;
-    color: #fff;
-    font-size: 1.1rem;
+    color:#0f4786;
+    padding: .4rem;
+    font-size: 1rem;
+    border-radius: .3rem;
 }
 
-#header-nav a:hover, #header-nav a.active {
-    color: tomato;
+#header-nav a:hover {
+    background-color: #0769da;
+    color: #fff;
+    width: 100%;
+}
+
+#main {
+    min-height: 90vh;
 }
 
 #main-footer {
-    background-color: #000;
+    background-color:#0f4786;
     color: #fff;
     text-align: center;
-    height: 5rem;;
-    padding: 2rem;
+    height: 5rem;
+    padding: 1.6rem;
 }
 
 .button {
     padding: .5rem 1rem;
     font-size: 1rem;
     color: #fff;
-    background-color: #073a75;
+    background-color: #0f4786;
     border: none;
     cursor: pointer;
     border-radius: .2rem;
+    width: 100%;
 }
 
 .button:hover {
@@ -114,55 +143,68 @@ body {
     font-family: inherit;
 }
 
-@media(min-width: 500px) {
+small > a {
+    color: #0f4786;
+}
+
+@media(min-width: 700px) {
 
     .container {
         width: 80%;
     }
 
-    #main-header-container {
-        text-align: left;
+    #header-search, #header-nav {
+        display: block ! Important;
     }
 
     #brand {
-        font-size: 1rem;
-        float: left;
-        width: 45%;
+        display: inline-block;
     }
-    
+
+    #menu {
+        display: none;
+    }
+
     #header-search {
+        display: block;
+        max-width: 22rem;
+        width: 100%;
         float: right;
-        width: 45%;
+        margin-top: .4rem;
     }
     
     #header-search input[type="search"] {
         min-width: 100%;
     }
         
+    #header-nav {
+        display: block;
+    }
+
     #header-nav ul {
-        display: flex;
         margin: 0;
     }
     
     #header-nav li {
         display: inline-block;
-        margin-right: 2rem;
+        width: 5rem;
+        text-align: center;
     }
-    
-    #header-nav li:nth-child(2) {
-        margin-left: auto;
-    }
-    
-    #header-nav li:last-child {
-        margin-right: 0;
-    }
-    
 }
 
-@media(min-width: 1050px) {
+
+@media(min-width: 1120px) {
 
     .container {
         width: 70%;
+    }
+
+    #header-search, #header-nav {
+        display: block ! Important;
+    }
+
+    #header-nav ul {
+        float: right;
     }
     
     #main-header-container {
@@ -172,18 +214,19 @@ body {
     
     #brand {
         font-size: 1.2rem;
-        flex: 0 0 17rem;
+        flex: 0 0 15rem;
         float: none;
     }
     
     #header-search {
-        flex: 2 2 18rem;
+        display: block;
+        flex: 2 2 25rem;
         margin: 0 2rem;
         float: none;
     }
 
     #header-nav {
-        flex: 1 2 20rem;
+        display: block;
+        flex: 1 2 22rem;
     }
-
 }
