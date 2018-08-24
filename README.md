@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/sudhons/StackOverflow-lite.svg?branch=api)](https://travis-ci.org/sudhons/StackOverflow-lite)
-[![Coverage Status](https://coveralls.io/repos/github/sudhons/StackOverflow-lite/badge.svg?branch=api)](https://coveralls.io/github/sudhons/StackOverflow-lite?branch=api)
+[![Build Status](https://travis-ci.org/sudhons/StackOverflow-lite.svg?branch=develop)](https://travis-ci.org/sudhons/StackOverflow-lite)
+[![Coverage Status](https://coveralls.io/repos/github/sudhons/StackOverflow-lite/badge.svg?branch=develop)](https://coveralls.io/github/sudhons/StackOverflow-lite?branch=develop)
 
 # StackOverflow-lite
 StackOverflow-lite is a platform where people can ask questions and provide answers.
