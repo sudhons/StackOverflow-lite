@@ -2,8 +2,8 @@
 import chai, { assert } from 'chai';
 import chaiHttp from 'chai-http';
 
-import app from '../app';
-import Question from '../dataStorage/data';
+import app from '../src/app';
+import Question from '../src/dataStorage/data';
 
 chai.use(chaiHttp);
 

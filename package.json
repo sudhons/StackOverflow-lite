@@ -23,19 +23,19 @@
     "eslint-plugin-react": "^7.4.0",
     "istanbul": "^0.4.5",
     "mocha-lcov-reporter": "^1.3.0",
-    "nodemon": "^1.18.3"
+    "nodemon": "^1.18.3",
+    "nyc": "^12.0.2"
   },
   "engines": {
     "node": "8.11.3"
   },
   "scripts": {
-    "test": "npm run build && mocha ./build/test/app.spec.js  --exit || true",
+    "test": "npm run build && nyc mocha ./build/test/app.test.js --exit",
     "lint": "eslint ./api",
     "build": "babel --presets es2015 ./api -d ./build/",
-    "start": "npm run build && node ./build/app.js",
-    "devStart": "npm run build && nodemon ./build/app.js",
-    "coverage": "istanbul cover ./build/test/app.spec.js",
-    "coveralls": "cat ./coverage/lcov.info | coveralls"
+    "start": "npm run build && node ./build/src/app.js",
+    "devStart": "npm run build && nodemon ./build/src/app.js",
+    "coveralls": "npm run test && nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
