@@ -29,11 +29,11 @@
     "node": "8.11.3"
   },
   "scripts": {
-    "test": "npm run build && mocha ./build/test/ || true",
+    "test": "npm run build && mocha ./build/test/app.spec.js  --exit || true",
     "lint": "eslint ./api",
     "build": "babel --presets es2015 ./api -d ./build/",
-    "start": "npm run build && node ./build/bin/www",
-    "devStart": "npm run build && nodemon ./build/bin/www",
+    "start": "npm run build && node ./build/app.js",
+    "devStart": "npm run build && nodemon ./build/app.js",
     "coverage": "istanbul cover ./build/test/app.spec.js",
     "coveralls": "cat ./coverage/lcov.info | coveralls"
   },

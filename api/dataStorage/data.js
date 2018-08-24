@@ -3,112 +3,119 @@ import uuid from 'uuid';
 let questionsData = [
   {
     id: uuid(),
+    title: 'Computer',
     question: 'what is Computer science',
+    date: Date.now(),
     answers: [
-      { id: uuid(), answer: 'It is about algorithms' },
-      { id: uuid(), answer: 'It is programming' },
-      { id: uuid(), answer: 'It is about computers' },
-      { id: uuid(), answer: 'It is about softwares' },
+      { id: uuid(), answer: 'It is about algorithms', date: Date.now() },
+      { id: uuid(), answer: 'It is programming', date: Date.now() },
+      { id: uuid(), answer: 'It is about computers', date: Date.now() },
+      { id: uuid(), answer: 'It is about softwares', date: Date.now() },
     ],
   },
   {
     id: uuid(),
+    title: 'Python',
     question: 'what is python',
+    date: Date.now(),
     answers: [
-      { id: uuid(), answer: 'It is a snake' },
-      { id: uuid(), answer: 'It is an animal' },
-      { id: uuid(), answer: 'It is a programming laguage' },
-      { id: uuid(), answer: 'It is a dangerous animal' },
+      { id: uuid(), answer: 'It is a snake', date: Date.now() },
+      { id: uuid(), answer: 'It is an animal', date: Date.now() },
+      { id: uuid(), answer: 'It is a programming laguage', date: Date.now() },
+      { id: uuid(), answer: 'It is a dangerous animal', date: Date.now() },
     ],
   },
   {
     id: uuid(),
+    title: 'Algorithm',
     question: 'what is do you know about algorithm',
+    date: Date.now(),
     answers: [
-      { id: uuid(), answer: 'No idea' },
-      { id: uuid(), answer: 'Problem solving' },
-      { id: uuid(), answer: 'A guide to computer' },
-      { id: uuid(), answer: 'A software' },
+      { id: uuid(), answer: 'No idea', date: Date.now() },
+      { id: uuid(), answer: 'Problem solving', date: Date.now() },
+      { id: uuid(), answer: 'A guide to computer', date: Date.now() },
+      { id: uuid(), answer: 'A software', date: Date.now() },
     ],
   },
 ];
 
-const data = {
-  getQuestions() {
+class Question {
+  constructor(title, questionBody) {
+    this.id = uuid();
+    this.title = title;
+    this.question = questionBody;
+    this.date = Date.now();
+    this.answers = [];
+  }
+
+  static getQuestions() {
     return questionsData;
-  },
+  }
 
-  addQuestion(qtn) {
-    const question = qtn.trim();
-    if (!question) return null;
-    const newQuestion = { question, id: uuid(), answers: [] };
-    questionsData.push(newQuestion);
-    return newQuestion;
-  },
-
-  getQuestion(questionId) {
+  static getQuestion(questionId) {
     const question = questionsData.find(qtn => qtn.id === questionId);
     if (!question) return null;
     return question;
-  },
+  }
 
-  updateQuestion(questionId, qtn) {
-    const editedQuestion = qtn.trim();
-    if (!editedQuestion) return null;
-    const question = this.getQuestion(questionId);
+  static addQuestion(questionTitle, questionBody) {
+    const newQuestion = new Question(questionTitle, questionBody);
+    questionsData.push(newQuestion);
+    return newQuestion;
+  }
+
+  static updateQuestion(questionId, questionTitle, questionBody) {
+    const question = Question.getQuestion(questionId);
     if (!question) return null;
-    question.question = editedQuestion;
+    question.title = questionTitle;
+    question.question = questionBody;
     return question;
-  },
+  }
 
-  addAnswer(questionId, ans) {
-    const answer = ans.trim();
-    if (!answer) return null;
-    const question = this.getQuestion(questionId);
+  static deleteQuestion(questionId) {
+    const question = Question.getQuestion(questionId);
     if (!question) return null;
-    const newAnswer = { answer, id: uuid() + 1 };
-    question.answers.push(newAnswer);
+    const questionIndex = questionsData.indexOf(questionId);
+    questionsData.splice(questionIndex, 1);
     return question;
-  },
+  }
 
-  getAnswer(questionId, answerId) {
-    const targetQuestion = this.getQuestion(questionId);
+  static deleteAllQuestions() {
+    questionsData = [];
+    return questionsData;
+  }
+
+  static getAnswer(questionId, answerId) {
+    const targetQuestion = Question.getQuestion(questionId);
     if (!targetQuestion) return null;
     const targetAnswer = targetQuestion.answers.find(answer => answer.id === answerId);
     if (!targetAnswer) return null;
     return targetAnswer;
-  },
+  }
 
-  updateAnswer(questionId, answerId, ans) {
-    const editedAnswer = ans.trim();
-    if (!editedAnswer) return null;
-    const targetAnswer = this.getAnswer(questionId, answerId);
-    if (!targetAnswer) return null;
-    targetAnswer.answer = editedAnswer;
-    return this.getQuestion(questionId);
-  },
-
-  deleteQuestion(questionId) {
-    const question = this.getQuestion(questionId);
+  static addAnswer(questionId, answer) {
+    const question = Question.getQuestion(questionId);
     if (!question) return null;
-    const questionIndex = questionsData.indexOf(question);
-    questionsData.splice(questionIndex, 1);
+    const newAnswer = { answer, id: uuid(), date: Date.now() };
+    question.answers.push(newAnswer);
     return question;
-  },
+  }
 
-  deleteAnswer(questionId, answerId) {
-    const answer = this.getAnswer(questionId, answerId);
+  static updateAnswer(questionId, answerId, newAnswer) {
+    const targetAnswer = Question.getAnswer(questionId, answerId);
+    if (!targetAnswer) return null;
+    targetAnswer.answer = newAnswer;
+    return Question.getQuestion(questionId);
+  }
+
+  static deleteAnswer(questionId, answerId) {
+    const answer = Question.getAnswer(questionId, answerId);
     if (!answer) return null;
-    const question = this.getQuestion(questionId);
+    const question = Question.getQuestion(questionId);
     const answerIndex = question.answers.indexOf(answer);
     question.answers.splice(answerIndex, 1);
     return question;
-  },
+  }
+}
 
-  deleteAllQuestions() {
-    questionsData = [];
-    return questionsData;
-  },
-};
-
-export default data;
+export default Question;

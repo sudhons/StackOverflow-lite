@@ -1,69 +1,176 @@
-import data from '../dataStorage/data';
+import Question from '../dataStorage/data';
 
 const getQuestionList = (req, res) => {
-  const resultData = data.getQuestions();
-  return res.status(200).json(resultData);
+  const resultData = Question.getQuestions();
+  res.status(200);
+  return res.json(resultData);
 };
 
 const addQuestion = (req, res) => {
-  const question = data.addQuestion(req.body.question.trim());
-  if (!question) return res.status(422).json({ message: 'Unsuccessful. Empty input field' });
-  return res.status(201).json({ message: 'Question successfully posted', question });
+  const title = req.body.title && req.body.title.trim();
+  const questionBody = req.body.question && req.body.question.trim();
+
+  if (!title) {
+    res.status(422);
+    return res.json({ message: 'Unsuccessful. Title field is Empty' });
+  }
+
+  if (!questionBody) {
+    res.status(422);
+    return res.json({ message: 'Unsuccessful. Question field is Empty' });
+  }
+
+  const question = Question.addQuestion(title, questionBody);
+
+  res.status(201);
+  return res.json({ message: 'Question successfully posted', question });
 };
 
 const getQuestion = (req, res) => {
-  const resultData = data.getQuestion(req.params.id);
-  if (!resultData) return res.status(404).json({ message: `Unsuccessful. Question with id ${req.params.id} is not found` });
+  const questionId = req.params.id;
+  const resultData = Question.getQuestion(questionId);
+
+  if (!resultData) {
+    res.status(404);
+    return res.json({ message: `Unsuccessful. Question with id ${questionId} is not found` });
+  }
+
   return res.json(resultData);
 };
 
 const updateQuestion = (req, res) => {
-  let question = data.getQuestion(req.params.id);
-  if (!question) return res.status(404).json({ message: `Unsuccessful. Question with id ${req.params.id} is not found` });
-  question = data.updateQuestion(req.params.id, req.body.question.trim());
-  if (!question) return res.status(422).json({ message: 'Unsuccessful. Empty input field' });
+  const questionId = req.params.id;
+  const title = req.body.title && req.body.title.trim();
+  const questionBody = req.body.question && req.body.question.trim();
+
+  if (!title) {
+    res.status(422);
+    return res.json({ message: 'Unsuccessful. Title field is Empty' });
+  }
+
+  if (!questionBody) {
+    res.status(422);
+    return res.json({ message: 'Unsuccessful. Question field is Empty' });
+  }
+
+  let question = Question.getQuestion(questionId);
+
+  if (!question) {
+    res.status(404);
+    return res.json({ message: `Unsuccessful. Question with id ${questionId} is not found` });
+  }
+
+  question = Question.updateQuestion(questionId, title, questionBody);
+
   return res.json({ message: 'Question successfully updated', question });
 };
 
 const deleteQuestion = (req, res) => {
-  let question = data.getQuestion(req.params.id);
-  if (!question) return res.status(404).json({ message: `Unsuccessful. Question with id ${req.params.id} is not found` });
-  question = data.deleteQuestion(req.params.id);
+  const questionId = req.params.id;
+
+  let question = Question.getQuestion(questionId);
+
+  if (!question) {
+    res.status(404);
+    return res.json({ message: `Unsuccessful. Question with id ${req.params.id} is not found` });
+  }
+
+  question = Question.deleteQuestion(questionId);
+
   return res.json({ message: 'Question successfully deleted', question });
 };
 
 const addAnswer = (req, res) => {
-  let question = data.getQuestion(req.params.id);
-  if (!question) return res.status(404).json({ message: `Unsuccessful. Question with id ${req.params.id} is not found` });
-  question = data.addAnswer(req.params.id, req.body.answer.trim());
-  if (!question) return res.status(422).json({ message: 'Unsuccessful. Empty input field' });
-  return res.status(201).json({ message: 'Answer successfully posted', question });
+  const questionId = req.params.qtnId;
+  const answer = req.body.answer && req.body.answer.trim();
+
+  if (!answer) {
+    res.status(422);
+    return res.json({ message: 'Unsuccessful. Answer field is Empty' });
+  }
+
+  let question = Question.getQuestion(questionId);
+
+  if (!question) {
+    res.status(404);
+    return res.json({ message: `Unsuccessful. Question with id ${questionId} is not found` });
+  }
+
+  question = Question.addAnswer(questionId, answer);
+
+  res.status(201);
+  return res.json({ message: 'Answer successfully posted', question });
 };
 
 const getAnswer = (req, res) => {
-  const question = data.getQuestion(req.params.qtnId);
-  if (!question) return res.status(404).json({ message: `Unsuccessful. Question with id ${req.params.qtnId} is not found` });
-  const answer = data.getAnswer(req.params.qtnId, req.params.ansId);
-  if (!answer) return res.status(404).json({ message: `Unsuccessful. Answer with id ${req.params.ansId} is not found` });
+  const questionId = req.params.qtnId;
+  const answerId = req.params.ansId;
+
+  const question = Question.getQuestion(questionId);
+
+  if (!question) {
+    res.status(404);
+    return res.json({ message: `Unsuccessful. Question with id ${req.params.qtnId} is not found` });
+  }
+
+  const answer = Question.getAnswer(questionId, answerId);
+  if (!answer) {
+    res.status(404);
+    return res.json({ message: `Unsuccessful. Answer with id ${req.params.ansId} is not found` });
+  }
+
   return res.json(answer);
 };
 
 const updateAnswer = (req, res) => {
-  let question = data.getQuestion(req.params.qtnId);
-  if (!question) return res.status(404).json({ message: `Unsuccessful. Question with id ${req.params.qtnId} is not found` });
-  const answer = data.getAnswer(req.params.qtnId, req.params.ansId);
-  if (!answer) return res.status(404).json({ message: `Unsuccessful. Answer with id ${req.params.ansId} is not found` });
-  question = data.updateAnswer(req.params.qtnId, req.params.ansId, req.body.answer.trim());
-  if (!question) return res.status(422).json({ message: 'Unsuccessful. Empty input field' });
+  const questionId = req.params.qtnId;
+  const answerId = req.params.ansId;
+  const newAnswer = req.body.answer && req.body.answer.trim();
+
+  if (!newAnswer) {
+    res.status(422);
+    return res.json({ message: 'Unsuccessful. Answer field is Empty' });
+  }
+
+  let question = Question.getQuestion(questionId);
+
+  if (!question) {
+    res.status(404);
+    return res.json({ message: `Unsuccessful. Question with id ${req.params.qtnId} is not found` });
+  }
+
+  const answer = Question.getAnswer(questionId, answerId);
+
+  if (!answer) {
+    res.status(404);
+    return res.json({ message: `Unsuccessful. Answer with id ${answerId} is not found` });
+  }
+
+  question = Question.updateAnswer(questionId, answerId, newAnswer);
+
+  res.status(200);
   return res.json({ message: 'Answer successfully updated', question });
 };
 
 const deleteAnswer = (req, res) => {
-  let question = data.getQuestion(req.params.qtnId);
-  if (!question) return res.status(404).json({ message: `Unsuccessful. Question with id ${req.params.qtnId} is not found` });
-  const answer = data.getAnswer(req.params.qtnId, req.params.ansId);
-  if (!answer) return res.status(404).json({ message: `Unsuccessful. Answer with id ${req.params.ansId} is not found` });
-  question = data.deleteAnswer(req.params.qtnId, req.params.ansId);
+  const questionId = req.params.qtnId;
+  const answerId = req.params.ansId;
+
+  let question = Question.getQuestion(questionId);
+
+  if (!question) {
+    res.status(404);
+    return res.json({ message: `Unsuccessful. Question with id ${questionId} is not found` });
+  }
+
+  const answer = Question.getAnswer(questionId, answerId);
+
+  if (!answer) {
+    res.status(404);
+    return res.json({ message: `Unsuccessful. Answer with id ${answerId} is not found` });
+  }
+
+  question = Question.deleteAnswer(questionId, answerId);
   return res.json({ message: 'Answer successfully deleted', question });
 };
 
