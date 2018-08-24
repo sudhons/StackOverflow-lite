@@ -30,7 +30,7 @@
     "node": "8.11.3"
   },
   "scripts": {
-    "test": "nyc mocha ./build/test/app.test.js --exit",
+    "test": "npm run build && nyc mocha ./build/test/app.test.js --exit",
     "lint": "eslint ./api",
     "build": "babel --presets es2015 ./api -d ./build/",
     "start": "npm run build && node ./build/src/app.js",
