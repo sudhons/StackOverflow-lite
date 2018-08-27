@@ -7,10 +7,34 @@ let questionsData = [
     question: 'what is Computer science',
     date: Date.now(),
     answers: [
-      { id: uuid(), answer: 'It is about algorithms', date: Date.now() },
-      { id: uuid(), answer: 'It is programming', date: Date.now() },
-      { id: uuid(), answer: 'It is about computers', date: Date.now() },
-      { id: uuid(), answer: 'It is about softwares', date: Date.now() },
+      {
+        id: uuid(),
+        answer: 'It is about algorithms',
+        date: Date.now(),
+        upVote: 0,
+        downVote: 0,
+      },
+      {
+        id: uuid(),
+        answer: 'It is programming',
+        date: Date.now(),
+        upVote: 0,
+        downVote: 0,
+      },
+      {
+        id: uuid(),
+        answer: 'It is about computers',
+        date: Date.now(),
+        upVote: 0,
+        downVote: 0,
+      },
+      {
+        id: uuid(),
+        answer: 'It is about softwares',
+        date: Date.now(),
+        upVote: 0,
+        downVote: 0,
+      },
     ],
   },
   {
@@ -19,10 +43,34 @@ let questionsData = [
     question: 'what is python',
     date: Date.now(),
     answers: [
-      { id: uuid(), answer: 'It is a snake', date: Date.now() },
-      { id: uuid(), answer: 'It is an animal', date: Date.now() },
-      { id: uuid(), answer: 'It is a programming laguage', date: Date.now() },
-      { id: uuid(), answer: 'It is a dangerous animal', date: Date.now() },
+      {
+        id: uuid(),
+        answer: 'It is a snake',
+        date: Date.now(),
+        upVote: 0,
+        downVote: 0,
+      },
+      {
+        id: uuid(),
+        answer: 'It is an animal',
+        date: Date.now(),
+        upVote: 0,
+        downVote: 0,
+      },
+      {
+        id: uuid(),
+        answer: 'It is a programming laguage',
+        date: Date.now(),
+        upVote: 0,
+        downVote: 0,
+      },
+      {
+        id: uuid(),
+        answer: 'It is a dangerous animal',
+        date: Date.now(),
+        upVote: 0,
+        downVote: 0,
+      },
     ],
   },
   {
@@ -31,7 +79,9 @@ let questionsData = [
     question: 'what is do you know about algorithm',
     date: Date.now(),
     answers: [
-      { id: uuid(), answer: 'No idea', date: Date.now() },
+      {
+        id: uuid(), answer: 'No idea', date: Date.now(),
+      },
       { id: uuid(), answer: 'Problem solving', date: Date.now() },
       { id: uuid(), answer: 'A guide to computer', date: Date.now() },
       { id: uuid(), answer: 'A software', date: Date.now() },
@@ -96,7 +146,14 @@ class Question {
   static addAnswer(questionId, answer) {
     const question = Question.getQuestion(questionId);
     if (!question) return null;
-    const newAnswer = { answer, id: uuid(), date: Date.now() };
+    const newAnswer = {
+      answer,
+      id: uuid(),
+      date: Date.now(),
+      upVotes: 0,
+      downVotes: 0,
+    };
+
     question.answers.push(newAnswer);
     return question;
   }

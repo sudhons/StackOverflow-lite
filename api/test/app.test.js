@@ -57,55 +57,49 @@ describe('App', () => {
         .get('/api/v1/questions')
         .end((err, res) => {
           assert.strictEqual(res.status, 200);
-          assert.isArray(res.body);
-          assert.isEmpty(res.body);
+          assert.hasAllKeys(res.body, ['status', 'message', 'data']);
+          assert.isEmpty(res.body.data);
           done();
         });
     });
 
     it('should GET an array of all questions', (done) => {
-      const { id: qtnId } = Question.addQuestion(title, testingQuestion1);
+      Question.addQuestion(title, testingQuestion1);
       chai.request(app)
         .get('/api/v1/questions')
         .end((err, res) => {
           assert.strictEqual(res.status, 200);
-          assert.isArray(res.body);
-          assert.isNotEmpty(res.body);
-          assert.lengthOf(res.body, 1);
-          assert.isObject(res.body[0]);
-          assert.hasAllKeys(res.body[0], ['id', 'title', 'date', 'question', 'answers']);
-          assert.isString(res.body[0].id);
-          assert.strictEqual(res.body[0].id, qtnId);
-          assert.isString(res.body[0].question);
-          assert.strictEqual(res.body[0].question, testingQuestion1);
-          assert.isArray(res.body[0].answers);
-          assert.isEmpty(res.body[0].answers);
+          assert.isObject(res.body);
+          assert.hasAllKeys(res.body, ['status', 'message', 'data']);
+          assert.isArray(res.body.data);
+          assert.lengthOf(res.body.data, 1);
+          assert.isObject(res.body.data[0]);
+          assert.hasAllKeys(res.body.data[0], ['id', 'title', 'date', 'question', 'answers']);
+          assert.strictEqual(res.body.data[0].question, testingQuestion1);
           done();
         });
     });
 
     it('should GET all questions and their answers', (done) => {
       const { id: qtnId } = Question.addQuestion(title, testingQuestion1);
-      const { answers: [{ id: ansId }] } = Question.addAnswer(qtnId, testingAnswer1);
+      Question.addAnswer(qtnId, testingAnswer1);
 
       chai.request(app)
         .get('/api/v1/questions')
         .end((err, res) => {
           assert.strictEqual(res.status, 200);
-          assert.isArray(res.body);
-          assert.isNotEmpty(res.body);
-          assert.lengthOf(res.body, 1);
-          assert.isObject(res.body[0]);
-          assert.hasAllKeys(res.body[0], ['id', 'title', 'question', 'date', 'answers']);
-          assert.isString(res.body[0].id);
-          assert.strictEqual(res.body[0].id, qtnId);
-          assert.isString(res.body[0].question);
-          assert.strictEqual(res.body[0].question, testingQuestion1);
-          assert.hasAllKeys(res.body[0].answers[0], ['id', 'answer', 'date']);
-          assert.isString(res.body[0].answers[0].id);
-          assert.strictEqual(res.body[0].answers[0].id, ansId);
-          assert.isString(res.body[0].answers[0].answer);
-          assert.deepEqual(res.body[0].answers[0].answer, testingAnswer1);
+          assert.isObject(res.body);
+          assert.hasAllKeys(res.body, ['status', 'message', 'data']);
+          assert.isArray(res.body.data);
+          assert.lengthOf(res.body.data, 1);
+          assert.isObject(res.body.data[0]);
+          assert.hasAllKeys(res.body.data[0], ['id', 'title', 'question', 'date', 'answers']);
+          assert.strictEqual(res.body.data[0].question, testingQuestion1);
+          assert.isArray(res.body.data[0].answers);
+          assert.lengthOf(res.body.data[0].answers, 1);
+          assert.isObject(res.body.data[0].answers[0]);
+          assert.hasAllKeys(res.body.data[0].answers[0], ['id', 'answer', 'date', 'upVotes', 'downVotes']);
+          assert.deepEqual(res.body.data[0].answers[0].answer, testingAnswer1);
           done();
         });
     });
@@ -119,10 +113,8 @@ describe('App', () => {
         .end((err, res) => {
           assert.strictEqual(res.status, 422);
           assert.isObject(res.body);
-          assert.isNotEmpty(res.body);
-          assert.hasAllKeys(res.body, ['message']);
-          assert.isString(res.body.message);
-          assert.strictEqual(res.body.message, 'Unsuccessful. Title field is Empty');
+          assert.hasAllKeys(res.body, ['status', 'message']);
+          assert.strictEqual(res.body.status, 422);
           done();
         });
     });
@@ -134,10 +126,8 @@ describe('App', () => {
         .end((err, res) => {
           assert.strictEqual(res.status, 422);
           assert.isObject(res.body);
-          assert.isNotEmpty(res.body);
-          assert.hasAllKeys(res.body, ['message']);
-          assert.isString(res.body.message);
-          assert.strictEqual(res.body.message, 'Unsuccessful. Question field is Empty');
+          assert.hasAllKeys(res.body, ['status', 'message']);
+          assert.strictEqual(res.body.status, 422);
           done();
         });
     });
@@ -148,19 +138,12 @@ describe('App', () => {
         .send({ title, question: testingQuestion1 })
         .end((err, res) => {
           assert.strictEqual(res.status, 201);
-          assert.isObject(res.body);
-          assert.isNotEmpty(res.body);
-          assert.hasAllKeys(res.body, ['message', 'question']);
-          assert.isString(res.body.message);
-          assert.strictEqual(res.body.message, 'Question successfully posted');
-          assert.isObject(res.body.question);
-          assert.isNotEmpty(res.body.question);
-          assert.hasAllKeys(res.body.question, ['id', 'title', 'question', 'date', 'answers']);
-          assert.isString(res.body.question.id);
-          assert.isString(res.body.question.question);
-          assert.strictEqual(res.body.question.question, testingQuestion1);
-          assert.isArray(res.body.question.answers);
-          assert.isEmpty(res.body.question.answers);
+          assert.hasAllKeys(res.body, ['status', 'message', 'data']);
+          assert.strictEqual(res.body.status, 201);
+          assert.hasAllKeys(res.body.data, ['id', 'title', 'question', 'date', 'answers']);
+          assert.strictEqual(res.body.data.question, testingQuestion1);
+          assert.isArray(res.body.data.answers);
+          assert.isEmpty(res.body.data.answers);
           done();
         });
     });
@@ -173,11 +156,8 @@ describe('App', () => {
         .get(`/api/v1/questions/${nonExistingQuestionId}`)
         .end((err, res) => {
           assert.strictEqual(res.status, 404);
-          assert.isObject(res.body);
-          assert.isNotEmpty(res.body);
-          assert.hasAllKeys(res.body, ['message']);
-          assert.isString(res.body.message);
-          assert.strictEqual(res.body.message, `Unsuccessful. Question with id ${nonExistingQuestionId} is not found`);
+          assert.hasAllKeys(res.body, ['status', 'message']);
+          assert.strictEqual(res.body.status, 404);
           done();
         });
     });
@@ -188,15 +168,10 @@ describe('App', () => {
         .get(`/api/v1/questions/${qtnId}`)
         .end((err, res) => {
           assert.strictEqual(res.status, 200);
-          assert.isObject(res.body);
-          assert.isNotEmpty(res.body);
-          assert.hasAllKeys(res.body, ['id', 'title', 'question', 'date', 'answers']);
-          assert.isString(res.body.id);
-          assert.strictEqual(res.body.id, qtnId);
-          assert.isString(res.body.question);
-          assert.strictEqual(res.body.question, testingQuestion1);
-          assert.isArray(res.body.answers);
-          assert.isEmpty(res.body.answers);
+          assert.hasAllKeys(res.body, ['status', 'message', 'data']);
+          assert.strictEqual(res.body.status, 200);
+          assert.hasAllKeys(res.body.data, ['id', 'title', 'question', 'date', 'answers']);
+          assert.strictEqual(res.body.data.question, testingQuestion1);
           done();
         });
     });
@@ -208,18 +183,14 @@ describe('App', () => {
         .get(`/api/v1/questions/${qtnId}`)
         .end((err, res) => {
           assert.strictEqual(res.status, 200);
-          assert.isObject(res.body);
-          assert.isNotEmpty(res.body);
-          assert.hasAllKeys(res.body, ['id', 'title', 'question', 'date', 'answers']);
-          assert.isString(res.body.id);
-          assert.strictEqual(res.body.id, qtnId);
-          assert.isString(res.body.question);
-          assert.strictEqual(res.body.question, testingQuestion1);
-          assert.isArray(res.body.answers);
-          assert.isNotEmpty(res.body.answers);
-          assert.lengthOf(res.body.answers, 1);
-          assert.hasAllKeys(res.body.answers[0], ['id', 'answer', 'date']);
-          assert.strictEqual(res.body.answers[0].answer, testingAnswer1);
+          assert.hasAllKeys(res.body, ['status', 'message', 'data']);
+          assert.strictEqual(res.body.status, 200);
+          assert.hasAllKeys(res.body.data, ['id', 'title', 'question', 'date', 'answers']);
+          assert.strictEqual(res.body.data.question, testingQuestion1);
+          assert.isArray(res.body.data.answers);
+          assert.lengthOf(res.body.data.answers, 1);
+          assert.hasAllKeys(res.body.data.answers[0], ['id', 'answer', 'date', 'upVotes', 'downVotes']);
+          assert.strictEqual(res.body.data.answers[0].answer, testingAnswer1);
           done();
         });
     });
@@ -233,11 +204,8 @@ describe('App', () => {
         .send({ title, question: testingQuestion2 })
         .end((err, res) => {
           assert.strictEqual(res.status, 404);
-          assert.isObject(res.body);
-          assert.isNotEmpty(res.body);
-          assert.hasAllKeys(res.body, ['message']);
-          assert.isString(res.body.message);
-          assert.strictEqual(res.body.message, `Unsuccessful. Question with id ${nonExistingQuestionId} is not found`);
+          assert.hasAllKeys(res.body, ['status', 'message']);
+          assert.strictEqual(res.body.status, 404);
           done();
         });
     });
@@ -249,11 +217,8 @@ describe('App', () => {
         .send({ title, question: emptyQuestion })
         .end((err, res) => {
           assert.strictEqual(res.status, 422);
-          assert.isObject(res.body);
-          assert.isNotEmpty(res.body);
-          assert.hasAllKeys(res.body, ['message']);
-          assert.isString(res.body.message);
-          assert.strictEqual(res.body.message, 'Unsuccessful. Question field is Empty');
+          assert.hasAllKeys(res.body, ['status', 'message']);
+          assert.strictEqual(res.body.status, 422);
           done();
         });
     });
@@ -265,20 +230,13 @@ describe('App', () => {
         .send({ title, question: testingQuestion2 })
         .end((err, res) => {
           assert.strictEqual(res.status, 200);
-          assert.isObject(res.body);
-          assert.isNotEmpty(res.body);
-          assert.hasAllKeys(res.body, ['message', 'question']);
-          assert.isString(res.body.message);
-          assert.strictEqual(res.body.message, 'Question successfully updated');
-          assert.isObject(res.body.question);
-          assert.isNotEmpty(res.body.question);
-          assert.hasAllKeys(res.body.question, ['id', 'title', 'question', 'date', 'answers']);
-          assert.isString(res.body.question.id);
-          assert.strictEqual(res.body.question.id, qtnId);
-          assert.isString(res.body.question.question);
-          assert.strictEqual(res.body.question.question, testingQuestion2);
-          assert.isArray(res.body.question.answers);
-          assert.isEmpty(res.body.question.answers);
+          assert.hasAllKeys(res.body, ['status', 'message', 'data']);
+          assert.strictEqual(res.body.status, 200);
+          assert.isObject(res.body.data);
+          assert.hasAllKeys(res.body.data, ['id', 'title', 'question', 'date', 'answers']);
+          assert.strictEqual(res.body.data.question, testingQuestion2);
+          assert.isArray(res.body.data.answers);
+          assert.isEmpty(res.body.data.answers);
           done();
         });
     });
@@ -291,11 +249,8 @@ describe('App', () => {
         .delete(`/api/v1/questions/${nonExistingQuestionId}`)
         .end((err, res) => {
           assert.strictEqual(res.status, 404);
-          assert.isObject(res.body);
-          assert.isNotEmpty(res.body);
-          assert.hasAllKeys(res.body, ['message']);
-          assert.isString(res.body.message);
-          assert.strictEqual(res.body.message, `Unsuccessful. Question with id ${nonExistingQuestionId} is not found`);
+          assert.hasAllKeys(res.body, ['status', 'message']);
+          assert.strictEqual(res.body.status, 404);
           done();
         });
     });
@@ -306,13 +261,10 @@ describe('App', () => {
         .delete(`/api/v1/questions/${qtnId}`)
         .end((err, res) => {
           assert.strictEqual(res.status, 200);
-          assert.isObject(res.body);
-          assert.isNotEmpty(res.body);
-          assert.hasAllKeys(res.body, ['message', 'question']);
-          assert.isString(res.body.message);
-          assert.strictEqual(res.body.message, 'Question successfully deleted');
-          assert.isObject(res.body.question);
-          assert.isNotEmpty(res.body.question);
+          assert.hasAllKeys(res.body, ['status', 'message', 'data']);
+          assert.strictEqual(res.body.status, 200);
+          assert.isObject(res.body.data);
+          assert.isNotEmpty(res.body.data);
           done();
         });
     });
@@ -326,11 +278,8 @@ describe('App', () => {
         .send({ answer: testingAnswer1 })
         .end((err, res) => {
           assert.strictEqual(res.status, 404);
-          assert.isObject(res.body);
-          assert.isNotEmpty(res.body);
-          assert.hasAllKeys(res.body, ['message']);
-          assert.isString(res.body.message);
-          assert.strictEqual(res.body.message, `Unsuccessful. Question with id ${nonExistingQuestionId} is not found`);
+          assert.hasAllKeys(res.body, ['status', 'message']);
+          assert.strictEqual(res.body.status, 404);
           done();
         });
     });
@@ -342,11 +291,8 @@ describe('App', () => {
         .send({ answer: emptyAnswer })
         .end((err, res) => {
           assert.strictEqual(res.status, 422);
-          assert.isObject(res.body);
-          assert.isNotEmpty(res.body);
-          assert.hasAllKeys(res.body, ['message']);
-          assert.isString(res.body.message);
-          assert.strictEqual(res.body.message, 'Unsuccessful. Answer field is Empty');
+          assert.hasAllKeys(res.body, ['status', 'message']);
+          assert.strictEqual(res.body.status, 422);
           done();
         });
     });
@@ -358,20 +304,13 @@ describe('App', () => {
         .send({ answer: testingAnswer1 })
         .end((err, res) => {
           assert.strictEqual(res.status, 201);
-          assert.isObject(res.body);
-          assert.isNotEmpty(res.body);
-          assert.hasAllKeys(res.body, ['message', 'question']);
-          assert.isString(res.body.message);
-          assert.strictEqual(res.body.message, 'Answer successfully posted');
-          assert.isObject(res.body.question);
-          assert.isNotEmpty(res.body.question);
-          assert.hasAllKeys(res.body.question, ['id', 'title', 'question', 'answers', 'date']);
-          assert.lengthOf(res.body.question.answers, 1);
-          assert.isObject(res.body.question.answers[0]);
-          assert.hasAllKeys(res.body.question.answers[0], ['id', 'answer', 'date']);
-          assert.isString(res.body.question.answers[0].id);
-          assert.isString(res.body.question.answers[0].answer);
-          assert.strictEqual(res.body.question.answers[0].answer, testingAnswer1);
+          assert.hasAllKeys(res.body, ['status', 'message', 'data']);
+          assert.strictEqual(res.body.status, 201);
+          assert.hasAllKeys(res.body.data, ['id', 'title', 'question', 'answers', 'date']);
+          assert.lengthOf(res.body.data.answers, 1);
+          assert.isObject(res.body.data.answers[0]);
+          assert.hasAllKeys(res.body.data.answers[0], ['id', 'answer', 'date', 'upVotes', 'downVotes']);
+          assert.strictEqual(res.body.data.answers[0].answer, testingAnswer1);
           done();
         });
     });
@@ -385,11 +324,8 @@ describe('App', () => {
         .get(`/api/v1/questions/${nonExistingQuestionId}/answers/${ansId}`)
         .end((err, res) => {
           assert.strictEqual(res.status, 404);
-          assert.isObject(res.body);
-          assert.isNotEmpty(res.body);
-          assert.hasAllKeys(res.body, ['message']);
-          assert.isString(res.body.message);
-          assert.strictEqual(res.body.message, `Unsuccessful. Question with id ${nonExistingQuestionId} is not found`);
+          assert.hasAllKeys(res.body, ['status', 'message']);
+          assert.strictEqual(res.body.status, 404);
           done();
         });
     });
@@ -401,11 +337,8 @@ describe('App', () => {
         .get(`/api/v1/questions/${qtnId}/answers/${nonExistingAnswerId}`)
         .end((err, res) => {
           assert.strictEqual(res.status, 404);
-          assert.isObject(res.body);
-          assert.isNotEmpty(res.body);
-          assert.hasAllKeys(res.body, ['message']);
-          assert.isString(res.body.message);
-          assert.strictEqual(res.body.message, `Unsuccessful. Answer with id ${nonExistingAnswerId} is not found`);
+          assert.hasAllKeys(res.body, ['status', 'message']);
+          assert.strictEqual(res.body.status, 404);
           done();
         });
     });
@@ -417,13 +350,10 @@ describe('App', () => {
         .get(`/api/v1/questions/${qtnId}/answers/${ansId}`)
         .end((err, res) => {
           assert.strictEqual(res.status, 200);
-          assert.isObject(res.body);
-          assert.isNotEmpty(res.body);
-          assert.hasAllKeys(res.body, ['id', 'answer', 'date']);
-          assert.isString(res.body.id);
-          assert.strictEqual(res.body.id, ansId);
-          assert.isString(res.body.answer);
-          assert.strictEqual(res.body.answer, testingAnswer1);
+          assert.hasAllKeys(res.body, ['status', 'message', 'data']);
+          assert.strictEqual(res.body.status, 200);
+          assert.hasAllKeys(res.body.data, ['id', 'answer', 'date', 'upVotes', 'downVotes']);
+          assert.strictEqual(res.body.data.answer, testingAnswer1);
           done();
         });
     });
@@ -438,11 +368,8 @@ describe('App', () => {
         .send({ answer: testingAnswer2 })
         .end((err, res) => {
           assert.strictEqual(res.status, 404);
-          assert.isObject(res.body);
-          assert.isNotEmpty(res.body);
-          assert.hasAllKeys(res.body, ['message']);
-          assert.isString(res.body.message);
-          assert.strictEqual(res.body.message, `Unsuccessful. Question with id ${nonExistingQuestionId} is not found`);
+          assert.hasAllKeys(res.body, ['status', 'message']);
+          assert.strictEqual(res.body.status, 404);
           done();
         });
     });
@@ -455,11 +382,8 @@ describe('App', () => {
         .send({ answer: testingAnswer2 })
         .end((err, res) => {
           assert.strictEqual(res.status, 404);
-          assert.isObject(res.body);
-          assert.isNotEmpty(res.body);
-          assert.hasAllKeys(res.body, ['message']);
-          assert.isString(res.body.message);
-          assert.strictEqual(res.body.message, `Unsuccessful. Answer with id ${nonExistingAnswerId} is not found`);
+          assert.hasAllKeys(res.body, ['status', 'message']);
+          assert.strictEqual(res.body.status, 404);
           done();
         });
     });
@@ -472,11 +396,8 @@ describe('App', () => {
         .send({ answer: emptyAnswer })
         .end((err, res) => {
           assert.strictEqual(res.status, 422);
-          assert.isObject(res.body);
-          assert.isNotEmpty(res.body);
-          assert.hasAllKeys(res.body, ['message']);
-          assert.isString(res.body.message);
-          assert.strictEqual(res.body.message, 'Unsuccessful. Answer field is Empty');
+          assert.hasAllKeys(res.body, ['status', 'message']);
+          assert.strictEqual(res.body.status, 422);
           done();
         });
     });
@@ -489,18 +410,13 @@ describe('App', () => {
         .send({ answer: testingAnswer2 })
         .end((err, res) => {
           assert.strictEqual(res.status, 200);
-          assert.isObject(res.body);
-          assert.isNotEmpty(res.body);
-          assert.hasAllKeys(res.body, ['message', 'question']);
-          assert.isString(res.body.message);
-          assert.strictEqual(res.body.message, 'Answer successfully updated');
-          assert.isObject(res.body.question);
-          assert.isNotEmpty(res.body.question);
-          assert.hasAllKeys(res.body.question, ['id', 'title', 'question', 'answers', 'date']);
-          assert.lengthOf(res.body.question.answers, 1);
-          assert.isObject(res.body.question.answers[0]);
-          assert.hasAllKeys(res.body.question.answers[0], ['id', 'answer', 'date']);
-          assert.strictEqual(res.body.question.answers[0].answer, testingAnswer2);
+          assert.hasAllKeys(res.body, ['status', 'message', 'data']);
+          assert.strictEqual(res.body.status, 200);
+          assert.hasAllKeys(res.body.data, ['id', 'title', 'question', 'answers', 'date']);
+          assert.lengthOf(res.body.data.answers, 1);
+          assert.isObject(res.body.data.answers[0]);
+          assert.hasAllKeys(res.body.data.answers[0], ['id', 'answer', 'date', 'upVotes', 'downVotes']);
+          assert.strictEqual(res.body.data.answers[0].answer, testingAnswer2);
           done();
         });
     });
@@ -515,11 +431,8 @@ describe('App', () => {
         .delete(`/api/v1/questions/${nonExistingQuestionId}/answers/${ansId}`)
         .end((err, res) => {
           assert.strictEqual(res.status, 404);
-          assert.isObject(res.body);
-          assert.isNotEmpty(res.body);
-          assert.hasAllKeys(res.body, ['message']);
-          assert.isString(res.body.message);
-          assert.strictEqual(res.body.message, `Unsuccessful. Question with id ${nonExistingQuestionId} is not found`);
+          assert.hasAllKeys(res.body, ['status', 'message']);
+          assert.strictEqual(res.body.status, 404);
           done();
         });
     });
@@ -532,11 +445,8 @@ describe('App', () => {
         .delete(`/api/v1/questions/${qtnId}/answers/${nonExistingAnswerId}`)
         .end((err, res) => {
           assert.strictEqual(res.status, 404);
-          assert.isObject(res.body);
-          assert.isNotEmpty(res.body);
-          assert.hasAllKeys(res.body, ['message']);
-          assert.isString(res.body.message);
-          assert.strictEqual(res.body.message, `Unsuccessful. Answer with id ${nonExistingAnswerId} is not found`);
+          assert.hasAllKeys(res.body, ['status', 'message']);
+          assert.strictEqual(res.body.status, 404);
           done();
         });
     });
@@ -549,16 +459,25 @@ describe('App', () => {
         .delete(`/api/v1/questions/${qtnId}/answers/${ansId}`)
         .end((err, res) => {
           assert.strictEqual(res.status, 200);
-          assert.isObject(res.body);
-          assert.isNotEmpty(res.body);
-          assert.hasAllKeys(res.body, ['message', 'question']);
-          assert.isString(res.body.message);
-          assert.strictEqual(res.body.message, 'Answer successfully deleted');
-          assert.isObject(res.body.question);
-          assert.isNotEmpty(res.body.question);
-          assert.hasAllKeys(res.body.question, ['id', 'title', 'question', 'answers', 'date']);
-          assert.isArray(res.body.question.answers);
-          assert.isEmpty(res.body.question.answers);
+          assert.hasAllKeys(res.body, ['status', 'message', 'data']);
+          assert.strictEqual(res.body.status, 200);
+          assert.isObject(res.body.data);
+          assert.hasAllKeys(res.body.data, ['id', 'title', 'question', 'answers', 'date']);
+          assert.isArray(res.body.data.answers);
+          assert.isEmpty(res.body.data.answers);
+          done();
+        });
+    });
+  });
+
+  describe('/GET unknown route', () => {
+    it('should return a 404 with a message', (done) => {
+      chai.request(app)
+        .get('/api/v1/anything')
+        .end((err, res) => {
+          assert.strictEqual(res.status, 404);
+          assert.hasAllKeys(res.body, ['status', 'message']);
+          assert.strictEqual(res.body.status, 404);
           done();
         });
     });
