@@ -10,19 +10,19 @@ router.get('/', (req, res) => {
 
 router.get('/questions', questions.getQuestionList);
 
-router.post('/questions', express.json(), questions.addQuestion);
+router.post('/questions', questions.addQuestion);
 
 router.get('/questions/:id', questions.getQuestion);
 
-router.put('/questions/:id', express.json(), questions.updateQuestion);
+router.put('/questions/:id', questions.updateQuestion);
 
-router.delete('/questions/:id', express.json(), questions.deleteQuestion);
+router.delete('/questions/:id', questions.deleteQuestion);
 
-router.post('/questions/:qtnId/answers', express.json(), questions.addAnswer);
+router.post('/questions/:qtnId/answers', questions.addAnswer);
 
 router.get('/questions/:qtnId/answers/:ansId', questions.getAnswer);
 
-router.put('/questions/:qtnId/answers/:ansId', express.json(), questions.updateAnswer);
+router.put('/questions/:qtnId/answers/:ansId', questions.updateAnswer);
 
 router.delete('/questions/:qtnId/answers/:ansId', questions.deleteAnswer);
 

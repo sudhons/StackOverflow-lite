@@ -2,40 +2,52 @@ import Question from '../dataStorage/data';
 
 const getQuestionList = (req, res) => {
   const resultData = Question.getQuestions();
+
+  const output = { status: 200, message: 'Successful', data: resultData };
+
   res.status(200);
-  return res.json(resultData);
+  return res.json(output);
 };
 
 const addQuestion = (req, res) => {
   const title = req.body.title && req.body.title.trim();
   const questionBody = req.body.question && req.body.question.trim();
 
-  if (!title) {
+  let output;
+
+  if (!title || !questionBody) {
+    output = { status: 422, message: 'Unsuccessful. Please ensure all required inputs are supplied and correct' };
+
     res.status(422);
-    return res.json({ message: 'Unsuccessful. Title field is Empty' });
+    return res.json(output);
   }
 
-  if (!questionBody) {
-    res.status(422);
-    return res.json({ message: 'Unsuccessful. Question field is Empty' });
-  }
+  const resultData = Question.addQuestion(title, questionBody);
 
-  const question = Question.addQuestion(title, questionBody);
+  output = { status: 201, message: 'Successful', data: resultData };
 
   res.status(201);
-  return res.json({ message: 'Question successfully posted', question });
+  return res.json(output);
 };
 
 const getQuestion = (req, res) => {
   const questionId = req.params.id;
+
+  let output;
+
   const resultData = Question.getQuestion(questionId);
 
   if (!resultData) {
+    output = { status: 404, message: 'Unsuccessful. Invalid URL' };
+
     res.status(404);
-    return res.json({ message: `Unsuccessful. Question with id ${questionId} is not found` });
+    return res.json(output);
   }
 
-  return res.json(resultData);
+  output = { status: 200, message: 'Successful', data: resultData };
+
+  res.status(200);
+  return res.json(output);
 };
 
 const updateQuestion = (req, res) => {
@@ -43,83 +55,98 @@ const updateQuestion = (req, res) => {
   const title = req.body.title && req.body.title.trim();
   const questionBody = req.body.question && req.body.question.trim();
 
-  if (!title) {
+  let output;
+
+  if (!title || !questionBody) {
+    output = { status: 422, message: 'Unsuccessful. Please ensure all required inputs are supplied and correct' };
+
     res.status(422);
-    return res.json({ message: 'Unsuccessful. Title field is Empty' });
+    return res.json(output);
   }
 
-  if (!questionBody) {
-    res.status(422);
-    return res.json({ message: 'Unsuccessful. Question field is Empty' });
-  }
+  const resultData = Question.updateQuestion(questionId, title, questionBody);
 
-  let question = Question.getQuestion(questionId);
+  if (!resultData) {
+    output = { status: 404, message: 'Unsuccessful. Invalid URL' };
 
-  if (!question) {
     res.status(404);
-    return res.json({ message: `Unsuccessful. Question with id ${questionId} is not found` });
+    return res.json(output);
   }
 
-  question = Question.updateQuestion(questionId, title, questionBody);
 
-  return res.json({ message: 'Question successfully updated', question });
+  output = { status: 200, message: 'Successful. Question successfully updated', data: resultData };
+
+  res.status(200);
+  return res.json(output);
 };
 
 const deleteQuestion = (req, res) => {
   const questionId = req.params.id;
 
-  let question = Question.getQuestion(questionId);
+  let output;
 
-  if (!question) {
+  const resultData = Question.deleteQuestion(questionId);
+
+  if (!resultData) {
+    output = { status: 404, message: 'Unsuccessful. Invalid URL' };
+
     res.status(404);
-    return res.json({ message: `Unsuccessful. Question with id ${req.params.id} is not found` });
+    return res.json(output);
   }
 
-  question = Question.deleteQuestion(questionId);
+  output = { status: 200, message: 'Successful. Question successfully deleted', data: resultData };
 
-  return res.json({ message: 'Question successfully deleted', question });
+  res.status(200);
+  return res.json(output);
 };
 
 const addAnswer = (req, res) => {
   const questionId = req.params.qtnId;
   const answer = req.body.answer && req.body.answer.trim();
 
+  let output;
+
   if (!answer) {
+    output = { status: 422, message: 'Unsuccessful. Please ensure all required inputs are supplied and correct' };
+
     res.status(422);
-    return res.json({ message: 'Unsuccessful. Answer field is Empty' });
+    return res.json(output);
   }
 
-  let question = Question.getQuestion(questionId);
+  const resultData = Question.addAnswer(questionId, answer);
 
-  if (!question) {
+  if (!resultData) {
+    output = { status: 404, message: 'Unsuccessful. Invalid URL' };
+
     res.status(404);
-    return res.json({ message: `Unsuccessful. Question with id ${questionId} is not found` });
+    return res.json(output);
   }
 
-  question = Question.addAnswer(questionId, answer);
+  output = { status: 201, message: 'Successful. Answer successfully posted', data: resultData };
 
   res.status(201);
-  return res.json({ message: 'Answer successfully posted', question });
+  return res.json(output);
 };
 
 const getAnswer = (req, res) => {
   const questionId = req.params.qtnId;
   const answerId = req.params.ansId;
 
-  const question = Question.getQuestion(questionId);
+  let output;
 
-  if (!question) {
+  const resultData = Question.getAnswer(questionId, answerId);
+
+  if (!resultData) {
+    output = { status: 404, message: 'Unsuccessful. Invalid URL' };
+
     res.status(404);
-    return res.json({ message: `Unsuccessful. Question with id ${req.params.qtnId} is not found` });
+    return res.json(output);
   }
 
-  const answer = Question.getAnswer(questionId, answerId);
-  if (!answer) {
-    res.status(404);
-    return res.json({ message: `Unsuccessful. Answer with id ${req.params.ansId} is not found` });
-  }
+  output = { status: 200, message: 'Successful', data: resultData };
 
-  return res.json(answer);
+  res.status(200);
+  return res.json(output);
 };
 
 const updateAnswer = (req, res) => {
@@ -127,51 +154,48 @@ const updateAnswer = (req, res) => {
   const answerId = req.params.ansId;
   const newAnswer = req.body.answer && req.body.answer.trim();
 
+  let output;
+
   if (!newAnswer) {
+    output = { status: 422, message: 'Unsuccessful. Please ensure all required inputs are supplied and correct' };
+
     res.status(422);
-    return res.json({ message: 'Unsuccessful. Answer field is Empty' });
+    return res.json(output);
   }
 
-  let question = Question.getQuestion(questionId);
+  const resultData = Question.updateAnswer(questionId, answerId, newAnswer);
 
-  if (!question) {
+  if (!resultData) {
+    output = { status: 404, message: 'Invalid URL' };
+
     res.status(404);
-    return res.json({ message: `Unsuccessful. Question with id ${req.params.qtnId} is not found` });
+    return res.json(output);
   }
 
-  const answer = Question.getAnswer(questionId, answerId);
-
-  if (!answer) {
-    res.status(404);
-    return res.json({ message: `Unsuccessful. Answer with id ${answerId} is not found` });
-  }
-
-  question = Question.updateAnswer(questionId, answerId, newAnswer);
+  output = { status: 200, message: 'Successful. Answer successfully updated', data: resultData };
 
   res.status(200);
-  return res.json({ message: 'Answer successfully updated', question });
+  return res.json(output);
 };
 
 const deleteAnswer = (req, res) => {
   const questionId = req.params.qtnId;
   const answerId = req.params.ansId;
 
-  let question = Question.getQuestion(questionId);
+  let output;
 
-  if (!question) {
+  const resultData = Question.deleteAnswer(questionId, answerId);
+
+  if (!resultData) {
+    output = { status: 404, message: 'Unsuccessful. Invalid URL' };
     res.status(404);
-    return res.json({ message: `Unsuccessful. Question with id ${questionId} is not found` });
+    return res.json(output);
   }
 
-  const answer = Question.getAnswer(questionId, answerId);
+  output = { status: 200, message: 'Answer successfully deleted', data: resultData };
 
-  if (!answer) {
-    res.status(404);
-    return res.json({ message: `Unsuccessful. Answer with id ${answerId} is not found` });
-  }
-
-  question = Question.deleteAnswer(questionId, answerId);
-  return res.json({ message: 'Answer successfully deleted', question });
+  res.status(200);
+  return res.json(output);
 };
 
 const questions = {
