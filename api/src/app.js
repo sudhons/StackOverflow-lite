@@ -1,10 +1,10 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 
-import questions from './routes/questions';
+import users from './routes/users';
+
 
 const app = express();
-
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -13,11 +13,10 @@ app.get('/', (req, res) => {
   res.redirect('/api/v1');
 });
 
-app.use('/api/v1', questions);
+app.use('/api/v1/auth', users);
 
-// catch 404
 app.use((req, res) => {
-  res.status(404).json({ status: 404, message: 'Unknonw url route' });
+  res.status(404).json({ status: 404, message: 'Not Found' });
 });
 
 const PORT = parseInt(process.env.PORT, 10) || 5000;
