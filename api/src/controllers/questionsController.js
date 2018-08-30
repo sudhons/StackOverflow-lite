@@ -74,6 +74,41 @@ class Question {
         });
     });
   }
+
+  static updateQuestion(request, response) {
+    const questionId = request.params.id;
+    const { title, question } = request.body;
+
+    let output;
+
+    return jwt.verify(request.token, 'secret', (err, userData) => {
+      if (err) {
+        output = { status: 403, message: 'Not authorized' };
+        response.status(403);
+        return response.json(output);
+      }
+
+      return client.query(`SELECT * FROM question WHERE question_id=${questionId}`)
+        .then((data) => {
+          if (data.rows.length > 0) {
+            const questionData = data.rows[0];
+            if (questionData.user_id === userData.user.user_id) {
+              return client.query(`UPDATE question SET title='${title}', question='${question}' WHERE question_id=${questionId}`)
+                .then(() => {
+                  output = { status: 200, message: 'Successful. Question successfully updated' };
+                  return response.status(200).json(output);
+                });
+            }
+
+            output = { status: 403, message: 'Not authorized' };
+            return response.status(403).json(output);
+          }
+
+          output = { status: 404, message: 'Unsuccessful. Invalid route' };
+          return response.status(404).json(output);
+        });
+    });
+  }
 }
 
 export default Question;
