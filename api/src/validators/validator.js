@@ -38,6 +38,23 @@ class Validator {
     request.body.password = password;
     return next();
   }
+
+  static validateUser(request, response, next) {
+    const username = request.body.username && request.body.username.trim();
+    const password = request.body.password && request.body.password.trim();
+
+    if (!password || !username) {
+      const output = { status: 422, message: 'Unsuccessful. Please ensure all required inputs are supplied and correct' };
+
+      response.status(422);
+      return response.json(output);
+    }
+
+    request.body.username = username;
+    request.body.password = password;
+    return next();
+  }
+
 }
 
 export default Validator;
