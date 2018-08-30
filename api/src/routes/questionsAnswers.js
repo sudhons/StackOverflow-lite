@@ -10,5 +10,6 @@ router.get('/', (req, res) => {
 });
 
 router.get('/questions', Validator.authorizeUser, Question.getQuestionList);
+router.post('/questions', Validator.authorizeUser, Validator.validateQuestion, Question.addQuestion);
 
 export default router;

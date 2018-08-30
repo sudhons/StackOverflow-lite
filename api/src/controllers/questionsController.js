@@ -23,6 +23,26 @@ class Question {
         });
     });
   }
+
+  static addQuestion(request, response) {
+    const { title, question } = request.body;
+
+    let output;
+
+    return jwt.verify(request.token, 'secret', (err, userData) => {
+      if (err) {
+        output = { status: 403, message: 'Not authorized' };
+        return response.status(403).json(output);
+      }
+
+      return client.query(`INSERT INTO question (title, question, user_id)
+      VALUES ('${title}', '${question}', ${userData.user.user_id})`)
+        .then(() => {
+          output = { status: 201, message: 'Successful. Question successfully added' };
+          return response.status(201).json(output);
+        });
+    });
+  }
 }
 
 export default Question;
