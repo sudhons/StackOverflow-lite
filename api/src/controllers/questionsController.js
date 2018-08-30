@@ -1,4 +1,10 @@
+import { Client } from 'pg';
 import Question from '../dataStorage/data';
+
+const connectString = 'postgres://eopqezcwnocylf:49ffe41ef3606a1060ea80f39eae4291981c6e3c886b1b122517f1bc4dfb7faf@ec2-50-16-196-57.compute-1.amazonaws.com:5432/dcve49n4q71mpj?ssl=true';
+const client = new Client(connectString);
+
+client.connect();
 
 const getQuestionList = (req, res) => {
   const resultData = Question.getQuestions();
