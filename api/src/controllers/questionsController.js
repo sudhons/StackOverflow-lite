@@ -43,6 +43,37 @@ class Question {
         });
     });
   }
+
+  static getQuestion(request, response) {
+    const questionId = request.params.id;
+
+    let output;
+
+    return jwt.verify(request.token, 'secret', (err) => {
+      if (err) {
+        output = { status: 403, message: 'Not authorized' };
+        return response.status(403).json(output);
+      }
+
+      return client.query(`SELECT * FROM question WHERE question_id=${questionId}`)
+        .then((questionData) => {
+          if (questionData.rows.length > 0) {
+            const result = questionData.rows[0];
+            return client.query(`SELECT * FROM answer WHERE question_id=${questionId}`)
+              .then((answerData) => {
+                result.answers = answerData.rows;
+                output = { status: 200, message: 'Successful', data: result };
+
+                response.status(200);
+                return response.json(output);
+              });
+          }
+
+          output = { status: 404, message: 'Unsuccessful. Invalid route' };
+          return response.status(404).json(output);
+        });
+    });
+  }
 }
 
 export default Question;
