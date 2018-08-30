@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 
 import users from './routes/users';
-
+import questionsAnswers from './routes/questionsAnswers';
 
 const app = express();
 
@@ -12,6 +12,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.get('/', (req, res) => {
   res.redirect('/api/v1');
 });
+
+app.use('/api/v1', questionsAnswers);
 
 app.use('/api/v1/auth', users);
 

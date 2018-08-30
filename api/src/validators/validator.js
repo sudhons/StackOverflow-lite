@@ -55,6 +55,17 @@ class Validator {
     return next();
   }
 
+  static authorizeUser(request, response, next) {
+    const token = request.headers.authorization;
+    if (!token) {
+      const output = { status: 403, message: 'Not authorized' };
+      response.status(403);
+      return response.json(output);
+    }
+
+    request.token = token;
+    return next();
+  }
 }
 
 export default Validator;
