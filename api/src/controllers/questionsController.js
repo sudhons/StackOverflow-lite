@@ -109,6 +109,49 @@ class Question {
         });
     });
   }
+
+  static deleteQuestion(request, response) {
+    const questionId = request.params.id;
+
+    let output;
+
+    return jwt.verify(request.token, 'secret', (err, userData) => {
+      if (err) {
+        output = { status: 403, message: 'Not authorized' };
+        response.status(403);
+        return response.json(output);
+      }
+
+      return client.query(`SELECT * FROM question WHERE question_id=${questionId}`)
+        .then((data) => {
+          if (data.rows.length > 0) {
+            const questionData = data.rows[0];
+            if (questionData.user_id === userData.user.user_id) {
+              return client.query(`SELECT * FROM answer WHERE question_id=${questionId}`)
+                .then((answersData) => {
+                  if (answersData.rows.length === 0) {
+                    return client.query(`DELETE FROM question WHERE question_id=${questionId}`)
+                      .then(() => {
+                        response.status(200);
+                        output = { status: 200, message: 'Successful. Question successfully deleted' };
+                        return response.json(output);
+                      });
+                  }
+
+                  output = { status: 403, message: 'Unsuccessful. Unavailable for deletion, question has answer(s)' };
+                  return response.status(403).json(output);
+                });
+            }
+
+            output = { status: 403, message: 'Not authorized' };
+            return response.status(403).json(output);
+          }
+
+          output = { status: 404, message: 'Unsuccessful. Invalid route' };
+          return response.status(404).json(output);
+        });
+    });
+  }
 }
 
 export default Question;

@@ -13,5 +13,6 @@ router.get('/questions', Validator.authorizeUser, Question.getQuestionList);
 router.post('/questions', Validator.authorizeUser, Validator.validateQuestion, Question.addQuestion);
 router.get('/questions/:id', Validator.authorizeUser, Question.getQuestion);
 router.put('/questions/:id', Validator.authorizeUser, Validator.validateQuestion, Question.updateQuestion);
+router.delete('/questions/:id', Validator.authorizeUser, Question.deleteQuestion);
 
 export default router;
