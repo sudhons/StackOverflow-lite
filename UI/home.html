@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>StackOverflow - Ask</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/welcome.css">
+</head>
+
+<body>
+    <header id="main-header">
+        <div id="main-header-container">
+            <div id="brand">
+                <h1>
+                    <a href="home.html">StackOverflow</a>
+                </h1>
+                <div id="menu">
+                    <a href="#">
+                        <i class="fas fa-bars"></i>
+                    </a>
+                </div>
+            </div>
+
+            <form id="header-search" action="" method="GET">
+                <input type="search" name="search" placeholder="search">
+            </form>
+
+            <nav id="header-nav" class="cleafix">
+                <ul>
+                    <li id="ask">
+                        <a href="#">Ask</a>
+                    </li>
+                    <li>
+                        <a href="profile.html">Profile</a>
+                    </li>
+                    <li>
+                        <a href="login.html">Log In</a>
+                    </li>
+                    <li>
+                        <a href="index.html">Sign Up</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main">
+        <section id="post-question">
+            <div class="container">
+                <h2>Your Question</h1>
+                    <form action="">
+                        <label for="title">Title</label>
+                        <input id="title" type="text" name="title" placeholder="Type question heading here...">
+                        <textarea id="question-body" name="question" placeholder="Type your question here..."></textarea>
+                        <input class="button" type="submit" value="Post">
+                    </form>
+            </div>
+        </section>
+
+        <section id="recent-questions">
+            <div class="container">
+                <h1>Recent Questions</h1>
+                <div class="question-list">
+                    <a class="question-title" href="question.html">How can i achieve single-threaded multitasking in C++?</a>
+                    <div class="question-stats">
+                        <small>
+                            asked by
+                            <a class="user-name" href="profile.html">Frank</a>
+                        </small>
+                        <small>
+                            2 mins ago
+                        </small>
+                        <small>
+                            <a class="answers-info" href="question.html">0 answers</a>
+                        </small>
+
+                    </div>
+                </div>
+                <div class="question-list">
+                    <a class="question-title" href="question.html">How can i achieve single-threaded multitasking in C?</a>
+                    <div class="question-stats">
+                        <small>
+                            asked by
+                            <a class="user-name" href="profile.html">Frank</a>
+                        </small>
+                        <small>
+                            16 mins ago
+                        </small>
+                        <small>
+                            <a class="answers-info" href="question.html">1 answer</a>
+                        </small>
+                    </div>
+                </div>
+                <div class="question-list">
+                    <a class="question-title" href="question.html">How can i achieve single-threaded multitasking in PHP?</a>
+                    <div class="question-stats">
+                        <small>
+                            asked by
+                            <a class="user-name" href="profile.html">Frank</a>
+                        </small>
+                        <small>
+                            2 hours ago
+                        </small>
+                        <small>
+                            <a class="answers-info" href="question.html">2 answers</a>
+                        </small>
+                    </div>
+                </div>
+                <div class="question-list">
+                    <a class="question-title" href="question.html">How can i achieve single-threaded multitasking in Python?</a>
+                    <div class="question-stats">
+                        <small>
+                            asked by
+                            <a class="user-name" href="profile.html">Frank</a>
+                        </small>
+                        <small>
+                            6 hours ago
+                        </small>
+                        <small>
+                            <a class="answers-info" href="question.html">3 answers</a>
+                        </small>
+                    </div>
+                </div>
+                <div class="question-list">
+                    <a class="question-title" href="question.html">How can i achieve single-threaded multitasking in Java?</a>
+                    <div class="question-stats">
+                        <small>
+                            asked by
+                            <a class="user-name" href="profile.html">Frank</a>
+                        </small>
+                        <small>
+                            8 hours ago
+                        </small>
+                        <small>
+                            <a class="answers-info" href="question.html">4 answers</a>
+                        </small>
+                    </div>
+                </div>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer id="main-footer">
+        Copyright &copy; 2018
+    </footer>
+    <script src="js/layout.js"></script>
+    <script src="js/postQuestion.js"></script>
+</body>
+
+</html>
