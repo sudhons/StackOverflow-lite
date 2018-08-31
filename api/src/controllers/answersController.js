@@ -138,6 +138,40 @@ class Answer {
         });
     });
   }
+
+  static deleteAnswer(request, response) {
+    const questionId = request.params.qtnId;
+    const answerId = request.params.ansId;
+
+    let output;
+
+    return jwt.verify(request.token, 'secret', (err, userData) => {
+      if (err) {
+        output = { status: 403, message: 'Not authorized' };
+        response.status(403);
+        return response.json(output);
+      }
+
+      return client.query(`SELECT * FROM answer WHERE question_id=${questionId} AND answer_id=${answerId}`)
+        .then((data) => {
+          if (data.rows.length > 0) {
+            if (data.rows[0].user_id === userData.user.user_id) {
+              return client.query(`DELETE FROM answer WHERE question_id=${questionId} AND answer_id=${answerId}`)
+                .then(() => {
+                  output = { status: 200, message: 'Successful. Answer successfully deleted' };
+                  return response.status(200).json(output);
+                });
+            }
+
+            output = { status: 403, message: 'Not authorized' };
+            return response.status(403).json(output);
+          }
+
+          output = { status: 404, message: 'Unsuccessful. Invalid route' };
+          return response.status(404).json(output);
+        });
+    });
+  }
 }
 
 export default Answer;

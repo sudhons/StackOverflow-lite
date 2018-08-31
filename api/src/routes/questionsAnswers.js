@@ -19,5 +19,6 @@ router.delete('/questions/:id', Validator.authorizeUser, Question.deleteQuestion
 router.post('/questions/:qtnId/answers', Validator.authorizeUser, Validator.validateAnswer, Answer.addAnswer);
 router.get('/questions/:qtnId/answers/:ansId', Validator.authorizeUser, Answer.getAnswer);
 router.put('/questions/:qtnId/answers/:ansId', Validator.authorizeUser, Validator.validateAnswer, Answer.updateAnswer);
+router.delete('/questions/:qtnId/answers/:ansId', Validator.authorizeUser, Answer.deleteAnswer);
 
 export default router;
