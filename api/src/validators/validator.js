@@ -114,14 +114,14 @@ class Validator {
     }
 
     if (questionBody.length < 30) {
-      const output = { status: 422, message: 'Unsuccessful. question is too short' };
+      const output = { status: 422, message: 'Unsuccessful. Question is too short' };
 
       response.status(422);
       return response.json(output);
     }
 
     if (questionBody.length > 400) {
-      const output = { status: 422, message: 'Unsuccessful. question is too long' };
+      const output = { status: 422, message: 'Unsuccessful. Question is too long' };
 
       response.status(422);
       return response.json(output);
@@ -129,6 +129,29 @@ class Validator {
 
     request.body.title = title;
     request.body.question = questionBody;
+
+    return next();
+  }
+
+  static validateAnswer(request, response, next) {
+    const answer = request.body.answer && request.body.answer.trim();
+    const { isPreferred } = request.body;
+
+    if (!answer && isPreferred !== 'true' && isPreferred !== 'false') {
+      const output = { status: 422, message: 'Unsuccessful. Please ensure all required inputs are supplied and correct' };
+
+      response.status(422);
+      return response.json(output);
+    }
+
+    if (answer.length < 30) {
+      const output = { status: 422, message: 'Unsuccessful. Answer is too short' };
+
+      response.status(422);
+      return response.json(output);
+    }
+
+    request.body.answer = answer;
 
     return next();
   }
