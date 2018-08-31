@@ -17,5 +17,6 @@ router.put('/questions/:id', Validator.authorizeUser, Validator.validateQuestion
 router.delete('/questions/:id', Validator.authorizeUser, Question.deleteQuestion);
 
 router.post('/questions/:qtnId/answers', Validator.authorizeUser, Validator.validateAnswer, Answer.addAnswer);
+router.get('/questions/:qtnId/answers/:ansId', Validator.authorizeUser, Answer.getAnswer);
 
 export default router;
