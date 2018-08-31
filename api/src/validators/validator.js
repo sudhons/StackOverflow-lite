@@ -144,7 +144,7 @@ class Validator {
       return response.json(output);
     }
 
-    if (answer.length < 30) {
+    if (answer && answer.length < 30) {
       const output = { status: 422, message: 'Unsuccessful. Answer is too short' };
 
       response.status(422);
