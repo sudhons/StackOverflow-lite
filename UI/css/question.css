@@ -1,0 +1,35 @@
+.answer {
+    border-bottom: 1px solid #aaa;
+    padding: 2rem 2rem;
+}
+
+.answer:last-child {
+    border-bottom: 0;
+}
+
+#question {
+    margin-bottom: 5rem;
+}
+
+.answer-stats > small {
+    margin-left: 1rem;
+    padding-right: 1rem;
+    border-right: 0.1rem solid #aaa;
+}
+
+.answer-stats > small:last-child {
+    border-right: none;
+}
+
+.upvote, .downvote, .user-name {
+    text-decoration: none;
+}
+
+.upvote:hover, .downvote:hover {
+    opacity: 0.8;
+}
+
+.user-name:hover {
+    text-decoration: underline;
+}
+

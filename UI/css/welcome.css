@@ -1,0 +1,32 @@
+.question-list {
+    border-bottom: 1px solid #aaa;;
+    padding: 1.2rem 0;
+    display: block;
+}
+
+.question-title, .user-name, .answers-info {
+    text-decoration: none;
+    color: #0f4786;
+}
+
+.question-title:visited, .user-name:visited, .answers-info:visited {
+    color: #0f4786;
+}
+
+.question-stats > small {
+    margin-right: 1rem;
+}
+
+.question-title:hover, .user-name:hover, .answers-info:hover {
+    text-decoration: underline;
+}
+
+#post-question {
+    display: none;
+}
+
+#signup, #login {
+    width: 100%;
+    min-height: 80.9vh;
+    padding: 2rem 0;
+}

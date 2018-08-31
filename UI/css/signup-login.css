@@ -1,0 +1,58 @@
+#form-signup, #form-login {
+    margin:4rem auto;
+    padding: 2rem;
+    width: 80%;
+    max-width: 450px;
+    min-width: 250px;
+    overflow: hidden;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+.form-anim {
+    position: relative;
+    height: 3.4rem;
+    margin: 1rem auto;
+}
+
+.form-anim-button {
+    margin-top: 1.5rem;
+}
+
+.form-anim > label {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: 0.3s linear;
+    font-weight: bold;
+}
+
+.form-anim > label.placeholder {
+    margin-top: 1.6em;
+    font-size: 1.1rem;
+    color: gray;
+}
+
+.form-anim > label.label {
+    margin-top: 0.2rem;
+    font-size: 1rem;
+    color: #0f4786;
+}
+
+.form-anim > input {
+    position: absolute;
+    padding: 0.5rem 0 0 0;
+    background-color: transparent;
+    font-size: 1rem;
+    border: none;
+    outline: none;
+    border-bottom: .05rem solid #aaa;
+    left: 0;
+    top: 1.6rem;
+    width: 100%;
+}
+
+.form-anim > input:focus {
+    border-color: #0f4786;
+}
